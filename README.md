@@ -1,10 +1,11 @@
-# Team <write your team name here>:
-1. <team member name 1>
-2. <team member name 2>
-3. <team member name 3>
+# Team Tegelinskid:
+1. Karl Aleksander Kaplinski	
+2. Hannes Jaakson
+3. Robyn Tomson
+4. Andreas Kelder
 
 ## Homework 1:
-<When you finish your homework, add a link pointing to the solution here (for example, a link to a page on the wiki)> 
+https://tegelinskid.atlassian.net/browse/KAN-1 
 
 ## Homework 2:
 <Links to the solution>
