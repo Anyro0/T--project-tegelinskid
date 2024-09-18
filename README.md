@@ -5,7 +5,7 @@
 4. Andreas Kelder
 
 ## Homework 1:
-https://tegelinskid.atlassian.net/browse/KAN-1 
+https://tegelinskid.atlassian.net/jira/software/projects/KAN/list
 
 ## Homework 2:
 <Links to the solution>
