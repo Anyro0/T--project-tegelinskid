@@ -22,6 +22,9 @@ Use Cases:
 Class model:
 https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/5963778/CLASS+MODEL
 
+Tasks:
+https://tegelinskid.atlassian.net/jira/software/projects/KAN/issues/?jql=project%20%3D%20%22KAN%22%20ORDER%20BY%20created%20DESC
+
 ## Homework 3:
 <Links to the solution>
 
