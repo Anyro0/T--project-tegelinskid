@@ -18,6 +18,10 @@ Use Cases:
 4. https://tegelinskid.atlassian.net/wiki/spaces/~7120200b974598976441f9a39fef2cdedecd34/pages/3768341/Use-Case+4+Cancel+a+purchase
 
 5. https://tegelinskid.atlassian.net/wiki/spaces/~7120200b974598976441f9a39fef2cdedecd34/pages/4620291/Use-Case+5+Confirm+and+finish+a+purchase
+
+Class model:
+https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/5963778/CLASS+MODEL
+
 ## Homework 3:
 <Links to the solution>
 
