@@ -5,11 +5,13 @@ import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import ee.ut.math.tvt.salessystem.dataobjects.TeamInfo;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -83,6 +85,7 @@ public class ConsoleUI {
         System.out.println("a IDX NR \tAdd NR of stock item with index IDX to the cart");
         System.out.println("p\t\tPurchase the shopping cart");
         System.out.println("r\t\tReset the shopping cart");
+        System.out.println("t\t\tView team info");
         System.out.println("-------------------------");
     }
 
@@ -97,6 +100,8 @@ public class ConsoleUI {
             showStock();
         else if (c[0].equals("c"))
             showCart();
+        else if (c[0].equals("t"))
+            showTeamInfo();
         else if (c[0].equals("p"))
             cart.submitCurrentPurchase();
         else if (c[0].equals("r"))
@@ -117,6 +122,13 @@ public class ConsoleUI {
         } else {
             System.out.println("unknown command");
         }
+    }
+
+    private void showTeamInfo() {
+        TeamInfo ti = new TeamInfo();
+        System.out.println("Team name: " + ti.getTeamName());
+        System.out.println("Team Contact Person: " + ti.getContactPerson());
+        System.out.println("Team members: " + ti.getTeamMembers());
     }
 
 }

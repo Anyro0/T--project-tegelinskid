@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Implementation-Title: Gradle Quickstart
+Implementation-Version: 1.0
+Main-Class: ee.ut.math.tvt.salessystem.ui.SalesSystemUI
+Class-Path: file:/C:/Users/hannesja/Software%20Engineering%20Program/lg-
+ 8-tegelinskid/build/libs/lg-8-tegelinskid-1.0.jar file:/C:/Users/hannes
+ ja/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-co
+ re/2.23.1/905802940e2c78042d75b837c136ac477d2b4e4d/log4j-core-2.23.1.ja
+ r file:/C:/Users/hannesja/.gradle/caches/modules-2/files-2.1/org.apache
+ .logging.log4j/log4j-api/2.23.1/9c15c29c526d9c6783049c0a77722693c66706e
+ 1/log4j-api-2.23.1.jar file:/C:/Users/hannesja/.gradle/caches/modules-2
+ /files-2.1/org.openjfx/javafx-fxml/17/8d79ed85fa9dde644d4b37d93a02a2ef2
+ 818769/javafx-fxml-17-win.jar file:/C:/Users/hannesja/.gradle/caches/mo
+ dules-2/files-2.1/org.openjfx/javafx-controls/17/efc0f4edde079c22987064
+ 922530c67fa1350a9b/javafx-controls-17-win.jar file:/C:/Users/hannesja/.
+ gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/17/2c56d2
+ 52b97eba8b42f049c6ce145172d744ce08/javafx-graphics-17-win.jar file:/C:/
+ Users/hannesja/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-ba
+ se/17/b63b9696f73009ca5002f49ec4db73576e2de168/javafx-base-17-win.jar
+

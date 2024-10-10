@@ -1,0 +1,17 @@
+# Ignore build directories
+/build/
+/SaleSystemGUI/build/
+
+# Ignore temporary files
+*.tmp
+
+# Ignore .bin files (e.g., previous compilation data)
+*.bin
+
+# Ignore .jar files
+*.jar
+
+# Ignore IntelliJ IDEA project files (optional, if you're using IntelliJ)
+/.idea/
+/*.iml
+
