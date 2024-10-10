@@ -3,6 +3,9 @@ package ee.ut.math.tvt.salessystem.dao;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,8 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
         this.stockItemList = items;
         this.soldItemList = new ArrayList<>();
     }
+
+
 
     @Override
     public List<StockItem> findStockItems() {
