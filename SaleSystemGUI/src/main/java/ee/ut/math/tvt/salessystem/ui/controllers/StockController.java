@@ -4,6 +4,7 @@ import com.sun.javafx.collections.ObservableListWrapper;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -11,7 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class StockController implements Initializable {
@@ -52,10 +56,21 @@ public class StockController implements Initializable {
             String name = warehouseName.getText();
             String priceText = warehousePrice.getText();
             String quantityText = warehouseAmount.getText();
-
-            Long id = Long.parseLong(barCode);
+            Long  id;
+            if(barCode.isEmpty()){
+                List<Long> ids = getListOfIds();
+                if (ids.isEmpty()) {
+                    id = 1L;
+                } else {
+                    Optional<Long> maxId = ids.stream().max(Long::compare);  // Get the max ID
+                    id = maxId.orElse(0L) + 1;
+                }
+            } else {
+                id = Long.parseLong(barCode);
+            }
             double price = Double.parseDouble(priceText);
             int quantity = Integer.parseInt(quantityText);
+
             if (price < 0) {
                 showError("Invalid price", "Price cant be a negative number.");
                 return;
@@ -63,6 +78,8 @@ public class StockController implements Initializable {
             else if (quantity <= 0) {
                 showError("Invalid amount", "Amount must be a positive number.");
                 return;
+            } else if (getListOfIds().contains(id)) {
+                showError("Invalid barcode", "Barcode must be  different from other items");
             } else {
                 StockItem newItem = new StockItem(id, name, "", price, quantity);
 
@@ -76,6 +93,13 @@ public class StockController implements Initializable {
         } catch (NumberFormatException e) {
         showError("Input error", "Price and amount must be valid numbers.");
         }
+    }
+    public List<Long> getListOfIds() {
+        // Get all the items (StockItem objects) from the TableView
+        ObservableList<StockItem> stockItems = warehouseTableView.getItems();
+
+        // Stream through the items and collect the IDs into a list
+        return stockItems.stream().map(StockItem::getId).collect(Collectors.toList());
     }
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
