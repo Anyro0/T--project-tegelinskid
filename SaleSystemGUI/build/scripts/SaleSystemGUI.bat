@@ -68,7 +68,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\SaleSystemGUI-1.0.jar;%APP_HOME%\lib\lg-8-tegelinskid-1.0.jar;%APP_HOME%\lib\log4j-core-2.23.1.jar;%APP_HOME%\lib\log4j-api-2.23.1.jar;%APP_HOME%\lib\javafx-fxml-17-win.jar;%APP_HOME%\lib\javafx-controls-17-win.jar;%APP_HOME%\lib\javafx-graphics-17-win.jar;%APP_HOME%\lib\javafx-base-17-win.jar
+set CLASSPATH=%APP_HOME%\lib\SaleSystemGUI-1.0.jar;%APP_HOME%\lib\lg-8-tegelinskid-1.0.jar;%APP_HOME%\lib\log4j-core-2.23.1.jar;%APP_HOME%\lib\log4j-api-2.23.1.jar;%APP_HOME%\lib\javafx-fxml-17-mac.jar;%APP_HOME%\lib\javafx-controls-17-mac.jar;%APP_HOME%\lib\javafx-graphics-17-mac.jar;%APP_HOME%\lib\javafx-base-17-mac.jar
 
 
 @rem Execute SaleSystemGUI

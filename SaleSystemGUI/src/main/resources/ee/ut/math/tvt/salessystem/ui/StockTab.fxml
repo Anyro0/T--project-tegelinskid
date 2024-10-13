@@ -31,7 +31,7 @@
                   <TextField fx:id="warehouseAmount" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <TextField fx:id="warehouseName" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <TextField fx:id="warehousePrice" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Button fx:id="addProduct" mnemonicParsing="false" text="Add product" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+                  <Button fx:id="addProduct" mnemonicParsing="false" text="Add product" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2" onAction="#addProductClicked"/>
                </children>
             </GridPane>
          </children>
@@ -70,7 +70,7 @@
                   </TableView>
                 </center>
                 <top>
-                  <Button onMouseClicked="#refreshButtonClicked" text="Refresh warehouse" BorderPane.alignment="TOP_LEFT" />
+                  <Button onMouseClicked="#refreshButtonClicked" text="Refresh warehouse" BorderPane.alignment="TOP_LEFT" onAction="#refreshButtonClicked"/>
                 </top>
               </BorderPane>
             </TitledPane>

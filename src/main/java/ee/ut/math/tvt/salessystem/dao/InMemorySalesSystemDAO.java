@@ -6,6 +6,8 @@ import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +18,22 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     public InMemorySalesSystemDAO() {
         List<StockItem> items = new ArrayList<StockItem>();
-        items.add(new StockItem(1L, "Lays chips", "Potato chips", 11.0, 5));
-        items.add(new StockItem(2L, "Chupa-chups", "Sweets", 8.0, 8));
-        items.add(new StockItem(3L, "Frankfurters", "Beer sauseges", 15.0, 12));
-        items.add(new StockItem(4L, "Free Beer", "Student's delight", 0.0, 100));
+        Path path = Paths.get("src/main/resources/stockItemListFile.txt");
+        String filepath = path.toAbsolutePath().toString();
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] elements = line.split(";");
+                long id = Long.parseLong(elements[0].replace("L", "").trim());
+                String name = elements[1].trim();
+                String description = elements[2].trim();
+                double price = Double.parseDouble(elements[3].trim());
+                int quantity = Integer.parseInt(elements[4].trim());
+                items.add(new StockItem(id, name, description, price, quantity));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.stockItemList = items;
         this.soldItemList = new ArrayList<>();
     }
