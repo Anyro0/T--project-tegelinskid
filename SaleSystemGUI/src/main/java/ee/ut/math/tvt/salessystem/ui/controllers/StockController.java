@@ -56,13 +56,13 @@ public class StockController implements Initializable {
             String name = warehouseName.getText();
             String priceText = warehousePrice.getText();
             String quantityText = warehouseAmount.getText();
-            Long  id;
+            Long id;
             if(barCode.isEmpty()){
                 List<Long> ids = getListOfIds();
                 if (ids.isEmpty()) {
                     id = 1L;
                 } else {
-                    Optional<Long> maxId = ids.stream().max(Long::compare);  // Get the max ID
+                    Optional<Long> maxId = ids.stream().max(Long::compare);
                     id = maxId.orElse(0L) + 1;
                 }
             } else {
@@ -79,7 +79,15 @@ public class StockController implements Initializable {
                 showError("Invalid amount", "Amount must be a positive number.");
                 return;
             } else if (getListOfIds().contains(id)) {
-                showError("Invalid barcode", "Barcode must be  different from other items");
+                if (updateProductQuantity(id, quantity, name, price)){
+                    warehouseBarCode.clear();
+                    warehouseName.clear();
+                    warehousePrice.clear();
+                    warehouseAmount.clear();
+                    return;
+                } else {
+                    showError("Invalid barcode", "Barcode must be  different from other items");
+                }
             } else {
                 StockItem newItem = new StockItem(id, name, "", price, quantity);
 
@@ -95,11 +103,23 @@ public class StockController implements Initializable {
         }
     }
     public List<Long> getListOfIds() {
-        // Get all the items (StockItem objects) from the TableView
         ObservableList<StockItem> stockItems = warehouseTableView.getItems();
 
-        // Stream through the items and collect the IDs into a list
         return stockItems.stream().map(StockItem::getId).collect(Collectors.toList());
+    }
+    public boolean updateProductQuantity(Long id, int newQuantity, String name, double price) {
+        ObservableList<StockItem> stockItems = warehouseTableView.getItems();
+        for (StockItem item : stockItems) {
+            if (item.getId().equals(id)) {
+                if(item.getName().equals(name) & item.getPrice() == price){
+                    item.setQuantity(item.getQuantity() + newQuantity);
+                    refreshStockItems();
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
     }
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
