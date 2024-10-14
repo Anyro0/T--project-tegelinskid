@@ -1,0 +1,4 @@
+1;Lays chips;Potato chips;11.0;5
+2;Chupa-chups;Sweets;8.0;8
+3;Frankfurters;Beer sausages;15.0;12
+4;Free Beer;Student's delight;0.0;100
