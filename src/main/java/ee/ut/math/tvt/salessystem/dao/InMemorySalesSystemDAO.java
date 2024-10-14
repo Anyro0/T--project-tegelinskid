@@ -3,9 +3,7 @@ package ee.ut.math.tvt.salessystem.dao;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -18,9 +16,8 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     public InMemorySalesSystemDAO() {
         List<StockItem> items = new ArrayList<StockItem>();
-        Path path = Paths.get("src/main/resources/stockItemListFile.txt");
-        String filepath = path.toAbsolutePath().toString();
-        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("stockItemListFile.txt");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] elements = line.split(";");

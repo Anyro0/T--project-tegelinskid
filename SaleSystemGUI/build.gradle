@@ -48,27 +48,4 @@ jar {
                    'Main-Class': mainClassName
     }
 
-
 }
-task copyResources(type: Copy) {
-    def sourceFile = "${rootProject.projectDir}/src/main/resources/stockItemListFile.txt"
-    def destDir = "${projectDir}/src/main/resources"
-    from(sourceFile) // Source file path
-    into(destDir)    // Destination path in the submodule
-}
-
-// This will be executed after the application runs
-task copyResources2(type: Copy) {
-    def sourceFile = "${projectDir}/src/main/resources/stockItemListFile.txt"
-    def destDir = "${rootProject.projectDir}/src/main/resources"
-    from(sourceFile) // Source file path
-    into(destDir)    // Destination path in the root module
-}
-task cleanUp(type: Delete) {
-    delete "${projectDir}/src/main/resources/stockItemListFile.txt"
-}
-
-processResources.dependsOn(copyResources)
-
-run.finalizedBy(copyResources2)
-run.finalizedBy(cleanUp)
