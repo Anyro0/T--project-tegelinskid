@@ -3,6 +3,8 @@ package ee.ut.math.tvt.salessystem.ui.controllers;
 import com.sun.javafx.collections.ObservableListWrapper;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,6 +49,14 @@ public class StockController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refreshStockItems();
+        this.warehouseBarCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (!newPropertyValue) {
+                    fillInputsBySelectedStockItem();
+                }
+            }
+        });
         // TODO refresh view after adding new items
     }
     @FXML
@@ -94,10 +104,7 @@ public class StockController implements Initializable {
                 dao.saveStockItem(newItem);
                 refreshStockItems();
             }
-            warehouseBarCode.clear();
-            warehouseName.clear();
-            warehousePrice.clear();
-            warehouseAmount.clear();
+            resetProductField();
         } catch (NumberFormatException e) {
         showError("Input error", "Price and amount must be valid numbers.");
         }
@@ -106,6 +113,29 @@ public class StockController implements Initializable {
         ObservableList<StockItem> stockItems = warehouseTableView.getItems();
 
         return stockItems.stream().map(StockItem::getId).collect(Collectors.toList());
+    }
+    private void resetProductField(){
+        warehouseBarCode.clear();
+        warehouseName.clear();
+        warehousePrice.clear();
+        warehouseAmount.clear();
+    }
+    private void fillInputsBySelectedStockItem() {
+        StockItem stockItem = getStockItemByBarcode();
+        if (stockItem != null) {
+            warehouseName.setText(stockItem.getName());
+            warehousePrice.setText(String.valueOf(stockItem.getPrice()));
+        } else {
+            resetProductField();
+        }
+    }
+    private StockItem getStockItemByBarcode() {
+        try {
+            long code = Long.parseLong(warehouseBarCode.getText());
+            return dao.findStockItem(code);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
     public boolean updateProductQuantity(Long id, int newQuantity, String name, double price) {
         ObservableList<StockItem> stockItems = warehouseTableView.getItems();
