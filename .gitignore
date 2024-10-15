@@ -1,6 +1,6 @@
 # Ignore build directories
-/build/
-/SaleSystemGUI/build/
+#/build/
+#/SaleSystemGUI/build/
 
 # Ignore temporary files
 *.tmp
