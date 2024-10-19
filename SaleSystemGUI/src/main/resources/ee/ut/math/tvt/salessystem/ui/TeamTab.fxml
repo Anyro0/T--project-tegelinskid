@@ -11,7 +11,7 @@
          <content>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <GridPane prefHeight="177.0" prefWidth="379.0">
+                  <GridPane prefHeight="254.0" prefWidth="379.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="134.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="285.0" minWidth="10.0" prefWidth="235.0" />
@@ -20,6 +20,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label prefHeight="17.0" prefWidth="83.0" text="Team name" />
@@ -39,6 +40,12 @@
                            </GridPane.margin>
                         </Label>
                         <Label fx:id="teamMembersLabel" text="MEMBERS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Team members emails" GridPane.rowIndex="3" />
+                        <Label fx:id="teamMembersEmailsLabel" text="TEAM MEMBERS EMAILS" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <padding>
                               <Insets left="10.0" />
                            </padding>

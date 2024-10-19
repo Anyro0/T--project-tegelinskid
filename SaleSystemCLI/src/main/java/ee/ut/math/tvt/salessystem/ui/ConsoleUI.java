@@ -127,7 +127,8 @@ public class ConsoleUI {
         TeamInfo ti = new TeamInfo();
         System.out.println("Team name: " + ti.getTeamName());
         System.out.println("Team Contact Person: " + ti.getContactPerson());
-        System.out.println("Team members: " + ti.getTeamMembers());
+        System.out.println("Team members: " + System.lineSeparator() + ti.getTeamMembers());
+        System.out.println("Team members emails: " + System.lineSeparator() + ti.getTeamMembersEmails());
     }
 
 }

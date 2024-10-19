@@ -9,6 +9,7 @@ public class TeamInfo {
     private String teamName;
     private String contactPerson;
     private String teamMembers;
+    private String teamMembersEmails;
     private String cakeImageFilepath;
 
 
@@ -26,6 +27,7 @@ public class TeamInfo {
             this.teamName = properties.getProperty("teamName");
             this.contactPerson = properties.getProperty("contactPerson");
             this.teamMembers = properties.getProperty("teamMembers");
+            this.teamMembersEmails = properties.getProperty("teamMembersEmails");
             this.cakeImageFilepath = properties.getProperty("cakePhotoFilepath");
 
         } catch (IOException e) {
@@ -50,4 +52,6 @@ public class TeamInfo {
     public String getCakeImageFilepath() {
         return cakeImageFilepath;
     }
+
+    public String getTeamMembersEmails() { return teamMembersEmails; }
 }

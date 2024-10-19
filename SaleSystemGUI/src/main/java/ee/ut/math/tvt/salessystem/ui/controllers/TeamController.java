@@ -24,6 +24,9 @@ public class TeamController implements Initializable {
     private Label teamMembersLabel;
 
     @FXML
+    private Label teamMembersEmailsLabel;
+
+    @FXML
     private ImageView cakeImageView;
 
     public TeamController() {
@@ -35,6 +38,7 @@ public class TeamController implements Initializable {
         teamNameLabel.setText(teamInfo.getTeamName());
         contactPersonLabel.setText(teamInfo.getContactPerson());
         teamMembersLabel.setText(teamInfo.getTeamMembers());
+        teamMembersEmailsLabel.setText(teamInfo.getTeamMembersEmails());
 
         //This code should be looked over again, I had problems getting the Image as an Image class here and MediaFiles is not reachable from here.
         Image cakeImage = new Image(getClass().getClassLoader().getResource("MediaFiles/Cake.png").toExternalForm());
