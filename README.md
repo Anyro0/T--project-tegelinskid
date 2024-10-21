@@ -26,7 +26,7 @@ Tasks:
 https://tegelinskid.atlassian.net/jira/software/projects/KAN/issues/?jql=project%20%3D%20%22KAN%22%20ORDER%20BY%20created%20DESC
 
 ## Homework 3:
-<Links to the solution>
+https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-3
 
 ## Homework 4:
 <Links to the solution>
