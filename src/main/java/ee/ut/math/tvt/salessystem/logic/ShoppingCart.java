@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.logic;
 
+import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 
@@ -20,13 +21,19 @@ public class ShoppingCart {
      */
     public void addItem(SoldItem item) {
 
+        int warehouseQuantity = dao.findStockItem(item.getStockItem().getId()).getQuantity();
+        if (warehouseQuantity - item.getQuantity() < 0) throw new SalesSystemException("Product amount exceeds what is available in stock");
+
         for (SoldItem itemAlreadyInBasket : items) {
             if (item.equals(itemAlreadyInBasket)) {
+                if (warehouseQuantity - (item.getQuantity() + itemAlreadyInBasket.getQuantity()) < 0)
+                    throw new SalesSystemException("Product amount + same product already in cart exceeds what is available in stock");
+                else {
                 itemAlreadyInBasket.setQuantity(itemAlreadyInBasket.getQuantity() + item.getQuantity());
                 return;
+                }
             }
         }
-        // TODO verify that warehouse items' quantity remains at least zero or throw an exception
 
         items.add(item);
         //log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());

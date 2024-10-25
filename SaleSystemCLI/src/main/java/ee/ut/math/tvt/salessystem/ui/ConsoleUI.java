@@ -111,7 +111,11 @@ public class ConsoleUI {
                 int amount = Integer.parseInt(c[2]);
                 StockItem item = dao.findStockItem(idx);
                 if (item != null) {
-                    cart.addItem(new SoldItem(item, Math.min(amount, item.getQuantity())));
+                    try {
+                        cart.addItem(new SoldItem(item, amount));
+                    } catch (SalesSystemException e) {
+                        System.out.println("Input error: " + e.getMessage());
+                    }
                 } else {
                     System.out.println("no stock item with id " + idx);
                 }

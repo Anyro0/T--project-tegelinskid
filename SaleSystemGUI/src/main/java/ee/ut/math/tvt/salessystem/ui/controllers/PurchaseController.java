@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -167,9 +168,26 @@ public class PurchaseController implements Initializable {
             } catch (NumberFormatException e) {
                 quantity = 1;
             }
-            shoppingCart.addItem(new SoldItem(stockItem, quantity));
+            try {
+                shoppingCart.addItem(new SoldItem(stockItem, quantity));
+            } catch (SalesSystemException e) {
+                showError("Input error", e.getMessage());
+            }
             purchaseTableView.refresh();
         }
+    }
+
+    /**
+     * Copied this code from StockController, I think a new class should be made for error windows
+     * @param title
+     * @param message
+     */
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     /**
