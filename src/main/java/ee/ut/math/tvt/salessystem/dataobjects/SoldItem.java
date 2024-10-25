@@ -22,6 +22,11 @@ public class SoldItem {
         this.quantity = quantity;
     }
 
+    public boolean equals(SoldItem newItem){
+        return this.stockItem.getId().equals(newItem.getStockItem().getId());
+    }
+
+
     public Long getId() {
         return id;
     }

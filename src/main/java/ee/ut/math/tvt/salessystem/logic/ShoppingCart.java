@@ -16,10 +16,16 @@ public class ShoppingCart {
     }
 
     /**
-     * Add new SoldItem to table.
+     * Add new SoldItem to table or update the table if one of the same item is already in the table
      */
     public void addItem(SoldItem item) {
-        // TODO In case such stockItem already exists increase the quantity of the existing stock
+
+        for (SoldItem itemAlreadyInBasket : items) {
+            if (item.equals(itemAlreadyInBasket)) {
+                itemAlreadyInBasket.setQuantity(itemAlreadyInBasket.getQuantity() + item.getQuantity());
+                return;
+            }
+        }
         // TODO verify that warehouse items' quantity remains at least zero or throw an exception
 
         items.add(item);
