@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.ut.math.tvt.salessystem.ui.controllers.HistoryController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" >
     <children>
         <SplitPane layoutX="-3.0" layoutY="-3.0" orientation="VERTICAL" prefHeight="147.0" prefWidth="600.0">
             <items>
