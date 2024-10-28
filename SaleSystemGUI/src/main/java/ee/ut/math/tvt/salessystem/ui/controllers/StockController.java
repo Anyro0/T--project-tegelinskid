@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
+import ee.ut.math.tvt.salessystem.InvalidPriceException;
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.logic.StockBasket;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
@@ -61,25 +62,17 @@ public class StockController implements Initializable {
             double price = Double.parseDouble(priceText);
             int quantity = Integer.parseInt(quantityText);
 
-            if (price < 0) {
-                showError("Invalid price", "Price can't be a negative number.");
-                throw new SalesSystemException("Price cannot be a negative number.");
-            } else if (quantity <= 0) {
-                showError("Invalid amount", "Amount must be a positive number.");
-                throw new SalesSystemException("Amount must be a positive number.");
-            } else {
-                boolean success = stockBasket.addProductToStock(id, name, price, quantity);
-                if (success) {
-                    resetProductFields();
-                    refreshStockItems();
-                } else {
-                    showError("Duplicate Barcode", "Barcode must be unique.");
-                    throw new SalesSystemException("Barcode must be unique. Duplicate barcode found.");
-                }
+            boolean success = stockBasket.addProductToStock(id, name, price, quantity);
+            if (success) {
+                resetProductFields();
+                refreshStockItems();
             }
+        } catch (InvalidPriceException e) {
+            showError("Invalid Price", e.getMessage());
+        } catch (SalesSystemException e) {
+            showError("Error", e.getMessage());
         } catch (NumberFormatException e) {
             showError("Input Error", "Price and amount must be valid numbers.");
-            throw new SalesSystemException("Price and amount must be valid numbers.", e);
         }
     }
 
