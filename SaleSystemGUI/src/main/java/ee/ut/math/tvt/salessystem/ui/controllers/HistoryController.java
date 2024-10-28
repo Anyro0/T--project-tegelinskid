@@ -22,7 +22,7 @@ public class HistoryController implements Initializable {
     @FXML
     public void initialize() {
         // Set the start date to today's date
-        startDatePicker.setValue(LocalDate.now());
+        startDatePicker.setValue(LocalDate.now()); //Doesn't work yet.
 
         // Set the end date to tomorrow's date
         endDatePicker.setValue(LocalDate.now().plusDays(1));
