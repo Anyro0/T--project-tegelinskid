@@ -59,6 +59,7 @@ public class PurchaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        log.info("Initializing PurchaseController");
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
@@ -76,18 +77,22 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
+        log.debug("PurchaseController initialized with DAO and ShoppingCart references");
     }
 
     private void nameFieldChanged(ActionEvent actionEvent) {
         String newName = nameField.getValue();
+        log.debug("Name field changed to: {}", newName);
         StockItem stockItemWithTheSameName;
         if(dao.findStockItem(newName) == null) {
             barCodeField.setText("");
             priceField.setText("");
+            log.warn("No stock item found with name: {}", newName);
         } else {
             stockItemWithTheSameName = dao.findStockItem(newName);
             barCodeField.setText(Long.toString(stockItemWithTheSameName.getId()));
             priceField.setText(Double.toString(stockItemWithTheSameName.getPrice()));
+            log.debug("Stock item found - ID: {}, Price: {}", stockItemWithTheSameName.getId(), stockItemWithTheSameName.getPrice());
         }
     }
 
@@ -142,6 +147,7 @@ public class PurchaseController implements Initializable {
         cancelPurchase.setDisable(false);
         submitPurchase.setDisable(false);
         newPurchase.setDisable(true);
+        log.debug("Inputs enabled for a new purchase");
     }
 
     // switch UI to the state that allows to initiate new purchase
@@ -151,6 +157,7 @@ public class PurchaseController implements Initializable {
         submitPurchase.setDisable(true);
         newPurchase.setDisable(false);
         disableProductField(true);
+        log.debug("Inputs disabled after sale submission or cancellation");
     }
 
     private void fillInputsBySelectedStockItem() {
@@ -158,8 +165,10 @@ public class PurchaseController implements Initializable {
         if (stockItem != null) {
             nameField.setValue(stockItem.getName());
             priceField.setText(String.valueOf(stockItem.getPrice()));
+            log.debug("Filled inputs with stock item - Name: {}, Price: {}", stockItem.getName(), stockItem.getPrice());
         } else {
             resetProductField();
+            log.warn("No stock item found with the entered barcode");
         }
     }
 
@@ -168,8 +177,10 @@ public class PurchaseController implements Initializable {
     private StockItem getStockItemByBarcode() {
         try {
             long code = Long.parseLong(barCodeField.getText());
+            log.debug("Searching for stock item with barcode: {}", code);
             return dao.findStockItem(code);
         } catch (NumberFormatException e) {
+            log.warn("Invalid barcode entered: {}", barCodeField.getText());
             return null;
         }
     }
@@ -182,20 +193,19 @@ public class PurchaseController implements Initializable {
         // add chosen item to the shopping cart.
         StockItem stockItem = getStockItemByBarcode();
         if (stockItem != null) {
-            int quantity;
             try {
-                quantity = Integer.parseInt(quantityField.getText());
-            } catch (NumberFormatException e) {
-                quantity = 1;
-            }
-            try {
+                int quantity = Integer.parseInt(quantityField.getText());
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
+                log.debug("Added item to cart - StockItem: {}, Quantity: {}", stockItem.getName(), quantity);
+                purchaseTableView.refresh();
+            } catch (NumberFormatException e) {
+                log.warn("Invalid quantity entered, defaulting to 1. Entered value: {}", quantityField.getText());
+                shoppingCart.addItem(new SoldItem(stockItem, 1));
+                purchaseTableView.refresh();
             } catch (SalesSystemException e) {
+                log.error("Error adding item to cart: {}", e.getMessage(), e);
                 showError("Input error", e.getMessage());
             }
-            purchaseTableView.refresh();
-
-
         }
     }
 
@@ -210,6 +220,7 @@ public class PurchaseController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+        log.error("Displayed error dialog - Title: {}, Message: {}", title, message);
     }
 
     /**
@@ -221,6 +232,7 @@ public class PurchaseController implements Initializable {
         this.quantityField.setDisable(disable);
         this.nameField.setDisable(disable);
         this.priceField.setDisable(disable);
+        log.debug("Product fields set to disabled: {}", disable);
     }
 
     /**
@@ -231,5 +243,6 @@ public class PurchaseController implements Initializable {
         quantityField.setText("1");
         nameField.setValue("");
         priceField.setText("");
+        log.debug("Product fields reset");
     }
 }
