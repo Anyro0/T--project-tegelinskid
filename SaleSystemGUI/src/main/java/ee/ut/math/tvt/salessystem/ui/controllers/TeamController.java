@@ -6,11 +6,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TeamController implements Initializable {
+    private static final Logger log = LogManager.getLogger(TeamController.class);
 
     private final TeamInfo teamInfo;
 
@@ -31,17 +34,32 @@ public class TeamController implements Initializable {
 
     public TeamController() {
         this.teamInfo = new TeamInfo();
+        log.info("TeamController instantiated with default TeamInfo.");
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        log.info("Initializing TeamController");
+
         teamNameLabel.setText(teamInfo.getTeamName());
         contactPersonLabel.setText(teamInfo.getContactPerson());
         teamMembersLabel.setText(teamInfo.getTeamMembers());
         teamMembersEmailsLabel.setText(teamInfo.getTeamMembersEmails());
+        log.debug("Team information set: Name={}, Contact={}, Members={}, Emails={}",
+                teamInfo.getTeamName(), teamInfo.getContactPerson(), teamInfo.getTeamMembers(), teamInfo.getTeamMembersEmails());
 
-        //This code should be looked over again, I had problems getting the Image as an Image class here and MediaFiles is not reachable from here.
-        Image cakeImage = new Image(getClass().getClassLoader().getResource("MediaFiles/Cake.png").toExternalForm());
-        cakeImageView.setImage(cakeImage);
+        // Loading the cake image
+        try {
+            URL imageUrl = getClass().getClassLoader().getResource("MediaFiles/Cake.png");
+            if (imageUrl != null) {
+                Image cakeImage = new Image(imageUrl.toExternalForm());
+                cakeImageView.setImage(cakeImage);
+                log.info("Cake image loaded successfully.");
+            } else {
+                log.error("Cake image not found at path: MediaFiles/Cake.png");
+            }
+        } catch (Exception e) {
+            log.error("Error loading cake image", e);
+        }
     }
 }
