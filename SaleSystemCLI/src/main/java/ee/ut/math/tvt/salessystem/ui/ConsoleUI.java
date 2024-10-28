@@ -1,4 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui;
+
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
@@ -27,11 +28,13 @@ public class ConsoleUI {
     public ConsoleUI(SalesSystemDAO dao) {
         this.dao = dao;
         cart = new ShoppingCart(dao);
+        log.info("ConsoleUI initialized with InMemorySalesSystemDAO and ShoppingCart.");
     }
 
     public static void main(String[] args) throws Exception {
         SalesSystemDAO dao = new InMemorySalesSystemDAO();
         ConsoleUI console = new ConsoleUI(dao);
+        log.info("Starting Sales System ConsoleUI.");
         console.run();
     }
 
@@ -39,6 +42,7 @@ public class ConsoleUI {
      * Run the sales system CLI.
      */
     public void run() throws IOException {
+        log.info("Running Sales System CLI.");
         System.out.println("===========================");
         System.out.println("=       Sales System      =");
         System.out.println("===========================");
@@ -46,35 +50,42 @@ public class ConsoleUI {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             System.out.print("> ");
-            processCommand(in.readLine().trim().toLowerCase());
-            System.out.println("Done. ");
+            try {
+                processCommand(in.readLine().trim().toLowerCase());
+            } catch (Exception e) {
+                log.error("Error processing command", e);
+            }
+            System.out.println("Done.");
         }
     }
 
     private void showStock() {
+        log.info("Displaying stock items.");
         List<StockItem> stockItems = dao.findStockItems();
         System.out.println("-------------------------");
         for (StockItem si : stockItems) {
             System.out.println(si.getId() + " " + si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items)");
         }
-        if (stockItems.size() == 0) {
+        if (stockItems.isEmpty()) {
             System.out.println("\tNothing");
         }
         System.out.println("-------------------------");
     }
 
     private void showCart() {
+        log.info("Displaying cart contents.");
         System.out.println("-------------------------");
         for (SoldItem si : cart.getAll()) {
-            System.out.println(si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items)" + " Total Sum: " + si.getSum());
+            System.out.println(si.getName() + " " + si.getPrice() + "Euro (" + si.getQuantity() + " items) Total Sum: " + si.getSum());
         }
-        if (cart.getAll().size() == 0) {
+        if (cart.getAll().isEmpty()) {
             System.out.println("\tNothing");
         }
         System.out.println("-------------------------");
     }
 
     private void printUsage() {
+        log.info("Displaying usage instructions.");
         System.out.println("-------------------------");
         System.out.println("Usage:");
         System.out.println("h\t\tShow this help");
@@ -88,50 +99,67 @@ public class ConsoleUI {
     }
 
     private void processCommand(String command) {
+        log.info("Processing command: {}", command);
         String[] c = command.split(" ");
-
-        if (c[0].equals("h"))
-            printUsage();
-        else if (c[0].equals("q"))
-            System.exit(0);
-        else if (c[0].equals("w"))
-            showStock();
-        else if (c[0].equals("c"))
-            showCart();
-        else if (c[0].equals("t"))
-            showTeamInfo();
-        else if (c[0].equals("p"))
-            cart.submitCurrentPurchase();
-        else if (c[0].equals("r"))
-            cart.cancelCurrentPurchase();
-        else if (c[0].equals("a") && c.length == 3) {
-            try {
-                long idx = Long.parseLong(c[1]);
-                int amount = Integer.parseInt(c[2]);
-                StockItem item = dao.findStockItem(idx);
-                if (item != null) {
-                    try {
-                        cart.addItem(new SoldItem(item, amount));
-                    } catch (SalesSystemException e) {
-                        System.out.println("Input error: " + e.getMessage());
-                    }
-                } else {
-                    System.out.println("no stock item with id " + idx);
+        try {
+            switch (c[0]) {
+                case "h" -> printUsage();
+                case "q" -> {
+                    log.info("Exiting system.");
+                    System.exit(0);
                 }
-            } catch (SalesSystemException | NoSuchElementException e) {
-                log.error(e.getMessage(), e);
+                case "w" -> showStock();
+                case "c" -> showCart();
+                case "t" -> showTeamInfo();
+                case "p" -> {
+                    cart.submitCurrentPurchase();
+                    log.info("Purchase submitted.");
+                }
+                case "r" -> {
+                    cart.cancelCurrentPurchase();
+                    log.info("Cart reset.");
+                }
+                case "a" -> {
+                    if (c.length == 3) {
+                        long idx = Long.parseLong(c[1]);
+                        int amount = Integer.parseInt(c[2]);
+                        log.info("Adding item to cart: Item ID={}, Quantity={}", idx, amount);
+                        addItemToCart(idx, amount);
+                    } else {
+                        log.warn("Invalid add command format: {}", command);
+                    }
+                }
+                default -> {
+                    log.warn("Unknown command: {}", command);
+                    System.out.println("Unknown command");
+                }
             }
-        } else {
-            System.out.println("unknown command");
+        } catch (Exception e) {
+            log.error("Error processing command: {}", command, e);
+        }
+    }
+
+    private void addItemToCart(long idx, int amount) {
+        try {
+            StockItem item = dao.findStockItem(idx);
+            if (item != null) {
+                cart.addItem(new SoldItem(item, amount));
+                log.info("Item added to cart: {}", item.getName());
+            } else {
+                log.warn("No stock item with ID {}", idx);
+                System.out.println("No stock item with id " + idx);
+            }
+        } catch (SalesSystemException | NoSuchElementException e) {
+            log.error("Error adding item to cart with ID {}: {}", idx, e.getMessage(), e);
         }
     }
 
     private void showTeamInfo() {
+        log.info("Displaying team information.");
         TeamInfo ti = new TeamInfo();
         System.out.println("Team name: " + ti.getTeamName());
         System.out.println("Team Contact Person: " + ti.getContactPerson());
         System.out.println("Team members: " + System.lineSeparator() + ti.getTeamMembers());
         System.out.println("Team members emails: " + System.lineSeparator() + ti.getTeamMembersEmails());
     }
-
 }
