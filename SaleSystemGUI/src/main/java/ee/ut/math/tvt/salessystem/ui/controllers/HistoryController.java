@@ -18,6 +18,12 @@ import org.apache.logging.log4j.Logger;
 public class HistoryController implements Initializable {
     private static final Logger log = LogManager.getLogger(SalesSystemUI.class);
 
+    @FXML
+    private DatePicker startDatePicker;
+
+    @FXML
+    private DatePicker endDatePicker;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         log.info("Initializing HistoryController");
@@ -25,7 +31,10 @@ public class HistoryController implements Initializable {
         try {
             log.debug("HistoryController initialization details - location: {}, resources: {}", location, resources);
 
-            // Future implementation of initialization logic can go here
+            startDatePicker.setValue(LocalDate.now());
+
+            // Set end date to tomorrow
+            endDatePicker.setValue(LocalDate.now().plusDays(1));
 
             log.info("HistoryController initialized successfully");
         } catch (Exception e) {
