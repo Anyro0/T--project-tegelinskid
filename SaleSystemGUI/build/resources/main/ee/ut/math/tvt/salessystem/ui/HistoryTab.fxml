@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.ut.math.tvt.salessystem.ui.controllers.HistoryController">
+    <children>
+        <SplitPane layoutX="-3.0" layoutY="-3.0" orientation="VERTICAL" prefHeight="147.0" prefWidth="600.0">
+            <items>
+                <AnchorPane prefHeight="142.0" prefWidth="598.0">
+                    <children>
+                        <DatePicker fx:id="startDatePicker" layoutX="356.0" layoutY="20.0" />
+                        <Button layoutX="57.0" layoutY="103.0" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Show all" />
+                        <Button layoutX="57.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Show last 10" />
+                        <Button layoutX="57.0" layoutY="20.0" mnemonicParsing="false" text="Show between dates" />
+                        <DatePicker fx:id="endDatePicker" layoutX="356.0" layoutY="45.0" />
+                        <Text layoutX="281.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start date" />
+                        <Text layoutX="283.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End date" />
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+        <TitledPane accessibleRole="MENU" alignment="CENTER" animated="false" collapsible="false" layoutX="-1.0" layoutY="149.0" prefHeight="251.0" prefWidth="600.0" text="Purchase history" textAlignment="CENTER">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <Label text="Purchase History" />
+                        <TableView fx:id="purchaseTable" prefHeight="138.0" prefWidth="602.0">
+                            <columns>
+                                <TableColumn prefWidth="200.0" text="Date" />
+                                <TableColumn prefWidth="200.0" text="Time" />
+                                <TableColumn prefWidth="200.0" text="Total" />
+                            </columns>
+                        </TableView>
+                        <TableView fx:id="itemTable" layoutY="123.0" prefHeight="103.0" prefWidth="600.0">
+                            <columns>
+                                <TableColumn prefWidth="120.0" text="Id" />
+                                <TableColumn prefWidth="120.0" text="Name" />
+                                <TableColumn prefWidth="120.0" text="Price" />
+                                <TableColumn prefWidth="120.0" text="Quantity" />
+                                <TableColumn prefWidth="120.0" text="Sum" />
+                            </columns>
+                        </TableView>
+                    </children></AnchorPane>
+            </content>
+        </TitledPane>
+    </children>
+</AnchorPane>
