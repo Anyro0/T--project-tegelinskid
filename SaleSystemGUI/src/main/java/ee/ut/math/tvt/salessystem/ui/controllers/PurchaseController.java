@@ -8,16 +8,15 @@ import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -43,13 +42,15 @@ public class PurchaseController implements Initializable {
     @FXML
     private TextField quantityField;
     @FXML
-    private TextField nameField;
+    private ChoiceBox<String> nameField; //NameChoiceBox
     @FXML
     private TextField priceField;
     @FXML
     private Button addItemButton;
     @FXML
     private TableView<SoldItem> purchaseTableView;
+
+    private List<String> choiceBoxItems;
 
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
@@ -63,6 +64,10 @@ public class PurchaseController implements Initializable {
         purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
         disableProductField(true);
 
+        choiceBoxItems = dao.findStockItemsNames();
+        nameField.getItems().addAll(choiceBoxItems);
+        nameField.setOnAction(this::nameFieldChanged);
+
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -72,6 +77,21 @@ public class PurchaseController implements Initializable {
             }
         });
     }
+
+    private void nameFieldChanged(ActionEvent actionEvent) {
+        String newName = nameField.getValue();
+        StockItem stockItemWithTheSameName;
+        if(dao.findStockItem(newName) == null) {
+            barCodeField.setText("");
+            priceField.setText("");
+        } else {
+            stockItemWithTheSameName = dao.findStockItem(newName);
+            barCodeField.setText(Long.toString(stockItemWithTheSameName.getId()));
+            priceField.setText(Double.toString(stockItemWithTheSameName.getPrice()));
+        }
+    }
+
+
 
     /** Event handler for the <code>new purchase</code> event. */
     @FXML
@@ -136,7 +156,7 @@ public class PurchaseController implements Initializable {
     private void fillInputsBySelectedStockItem() {
         StockItem stockItem = getStockItemByBarcode();
         if (stockItem != null) {
-            nameField.setText(stockItem.getName());
+            nameField.setValue(stockItem.getName());
             priceField.setText(String.valueOf(stockItem.getPrice()));
         } else {
             resetProductField();
@@ -209,7 +229,7 @@ public class PurchaseController implements Initializable {
     private void resetProductField() {
         barCodeField.setText("");
         quantityField.setText("1");
-        nameField.setText("");
+        nameField.setValue("");
         priceField.setText("");
     }
 }
