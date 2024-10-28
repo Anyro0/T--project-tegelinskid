@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="StockBasketTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-10-28T19:12:42" hostname="DESKTOP-PPQ2JI1" time="0.019">
+<testsuite name="StockBasketTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-10-28T20:45:32" hostname="DESKTOP-PPQ2JI1" time="0.545">
   <properties/>
-  <testcase name="testAddingExistingItem()" classname="StockBasketTest" time="0.014"/>
-  <testcase name="testAddingItemWithNegativeQuantity()" classname="StockBasketTest" time="0.001"/>
-  <testcase name="testAddingNewItem()" classname="StockBasketTest" time="0.001"/>
+  <testcase name="testAddingItemBeginsAndCommitsTransaction()" classname="StockBasketTest" time="0.545"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
