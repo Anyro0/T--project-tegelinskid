@@ -29,7 +29,7 @@ https://tegelinskid.atlassian.net/jira/software/projects/KAN/issues/?jql=project
 https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-3
 
 ## Homework 4:
-<Links to the solution>
+Task 1: https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/12451841/Task+1.+The+debugger
 
 ## Homework 5:
 <Links to the solution>
