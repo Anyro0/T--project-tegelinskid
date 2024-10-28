@@ -13,8 +13,17 @@ import java.util.ResourceBundle;
  * labelled "History" in the menu).
  */
 public class HistoryController implements Initializable {
+    @FXML
+    private DatePicker startDatePicker;
+
+    @FXML
+    private DatePicker endDatePicker;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // TODO: implement
+        startDatePicker.setValue(LocalDate.now());
+
+        // Set end date to tomorrow
+        endDatePicker.setValue(LocalDate.now().plusDays(1));
     }
 }
