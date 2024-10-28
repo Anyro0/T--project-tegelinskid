@@ -41,50 +41,59 @@ public class SalesSystemUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        log.info("javafx version: " + System.getProperty("javafx.runtime.version"));
-        log.info("SalesSystemUI started");
+        log.info("SalesSystemUI startup. JavaFX version: {}", System.getProperty("javafx.runtime.version"));
 
-        Tab purchaseTab = new Tab();
-        purchaseTab.setText("Point-of-sale");
-        purchaseTab.setClosable(false);
-        purchaseTab.setContent(loadControls("PurchaseTab.fxml", new PurchaseController(dao, shoppingCart)));
+        // Initialize tabs with FXML controllers
+        try {
+            Tab purchaseTab = createTab("Point-of-sale", "PurchaseTab.fxml", new PurchaseController(dao, shoppingCart));
+            Tab stockTab = createTab("Warehouse", "StockTab.fxml", new StockController(dao));
+            //Tab historyTab = createTab("History", "HistoryTab.fxml", null);  // Update controller when available
+            Tab teamTab = createTab("Team", "TeamTab.fxml", new TeamController());
 
-        Tab stockTab = new Tab();
-        stockTab.setText("Warehouse");
-        stockTab.setClosable(false);
-        stockTab.setContent(loadControls("StockTab.fxml", new StockController(dao)));
+            // Set up the root layout
+            Group root = new Group();
+            Scene scene = new Scene(root, 600, 500, Color.WHITE);
+            scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
 
-        Tab historyTab = new Tab();
-        historyTab.setText("History");
-        historyTab.setClosable(false);
-        //historyTab.setContent(loadControls("HistoryTab.fxml", new HistoryController()));
+            BorderPane borderPane = new BorderPane();
+            borderPane.prefHeightProperty().bind(scene.heightProperty());
+            borderPane.prefWidthProperty().bind(scene.widthProperty());
+            borderPane.setCenter(new TabPane(purchaseTab, stockTab, teamTab));//add history tab when it  has been made
+            root.getChildren().add(borderPane);
 
-        Tab TeamTab = new Tab();
-        TeamTab.setText("Team");
-        TeamTab.setClosable(false);
-        TeamTab.setContent(loadControls("TeamTab.fxml", new TeamController()));
+            primaryStage.setTitle("Sales System");
+            primaryStage.setScene(scene);
+            primaryStage.show();
 
-        Group root = new Group();
-        Scene scene = new Scene(root, 600, 500, Color.WHITE);
-        scene.getStylesheets().add(getClass().getResource("DefaultTheme.css").toExternalForm());
+            log.info("SalesSystem GUI started successfully.");
+        } catch (Exception e) {
+            log.error("Failed to start SalesSystemUI", e);
+        }
+    }
+    private Tab createTab(String title, String fxml, Initializable controller) {
+        Tab tab = new Tab();
+        tab.setText(title);
+        tab.setClosable(false);
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.prefHeightProperty().bind(scene.heightProperty());
-        borderPane.prefWidthProperty().bind(scene.widthProperty());
-        borderPane.setCenter(new TabPane(purchaseTab, stockTab, historyTab, TeamTab));
-        root.getChildren().add(borderPane);
+        try {
+            log.debug("Loading controls for tab: {}", title);
+            tab.setContent(loadControls(fxml, controller));
+            log.info("Successfully loaded tab: {}", title);
+        } catch (IOException e) {
+            log.error("Error loading FXML file for tab '{}': {}", title, fxml, e);
+        }
 
-        primaryStage.setTitle("Sales system");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        log.info("Salesystem GUI started");
+        return tab;
     }
 
     private Node loadControls(String fxml, Initializable controller) throws IOException {
+        log.debug("Attempting to load FXML file: {}", fxml);
         URL resource = getClass().getResource(fxml);
-        if (resource == null)
+
+        if (resource == null) {
+            log.error("FXML file '{}' not found.", fxml);
             throw new IllegalArgumentException(fxml + " not found");
+        }
 
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
         fxmlLoader.setController(controller);
