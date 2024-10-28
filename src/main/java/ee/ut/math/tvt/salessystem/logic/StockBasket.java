@@ -4,11 +4,14 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.InvalidPriceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StockBasket {
+    private static final Logger log = LogManager.getLogger(StockBasket.class);
 
     private final SalesSystemDAO dao;
 
@@ -17,17 +20,19 @@ public class StockBasket {
     }
 
     public boolean addProductToStock(Long id, String name, double price, int quantity) throws SalesSystemException {
+        dao.beginTransaction();
         validatePrice(price);
         validateQuantity(quantity);
-
         List<Long> ids = getListOfIds();
+        boolean temp = true;
         if (ids.contains(id)) {
-            return updateProductQuantity(id, quantity, name, price);
+            temp = updateProductQuantity(id, quantity, name, price);
         } else {
             StockItem newItem = new StockItem(id, name, "", price, quantity);
             dao.saveStockItem(newItem);
-            return true;
         }
+        dao.commitTransaction();
+        return temp;
     }
 
     public Long generateId(String barCode) throws SalesSystemException {
