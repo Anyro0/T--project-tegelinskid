@@ -48,7 +48,7 @@ public class SalesSystemUI extends Application {
         try {
             Tab purchaseTab = createTab("Point-of-sale", "PurchaseTab.fxml", new PurchaseController(dao, shoppingCart));
             Tab stockTab = createTab("Warehouse", "StockTab.fxml", new StockController(dao));
-            //Tab historyTab = createTab("History", "HistoryTab.fxml", null);  // Update controller when available
+            Tab historyTab = createTab("History", "HistoryTab.fxml", null);  // Update controller when available
             Tab teamTab = createTab("Team", "TeamTab.fxml", new TeamController());
 
             // Set up the root layout
@@ -59,7 +59,7 @@ public class SalesSystemUI extends Application {
             BorderPane borderPane = new BorderPane();
             borderPane.prefHeightProperty().bind(scene.heightProperty());
             borderPane.prefWidthProperty().bind(scene.widthProperty());
-            borderPane.setCenter(new TabPane(purchaseTab, stockTab, teamTab)); //add historyTab between  stockTab and teamTAb
+            borderPane.setCenter(new TabPane(purchaseTab, stockTab, historyTab, teamTab)); //add historyTab between  stockTab and teamTAb
             root.getChildren().add(borderPane);
 
             primaryStage.setTitle("Sales System");
