@@ -1,28 +1,23 @@
 package ee.ut.math.tvt.salessystem.ui.controllers;
 
-import com.sun.javafx.collections.ObservableListWrapper;
+import ee.ut.math.tvt.salessystem.SalesSystemException;
+import ee.ut.math.tvt.salessystem.logic.StockBasket;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.collections.FXCollections;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class StockController implements Initializable {
 
-    private final SalesSystemDAO dao;
+    private final StockBasket stockBasket;
     @FXML
     private TextField warehouseBarCode;
 
@@ -38,27 +33,22 @@ public class StockController implements Initializable {
     @FXML
     private Button addProduct;
     @FXML
-    private Button addItem;
-    @FXML
     private TableView<StockItem> warehouseTableView;
 
     public StockController(SalesSystemDAO dao) {
-        this.dao = dao;
+        this.stockBasket = new StockBasket(dao);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refreshStockItems();
-        this.warehouseBarCode.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-                if (!newPropertyValue) {
-                    fillInputsBySelectedStockItem();
-                }
+        this.warehouseBarCode.focusedProperty().addListener((observable, oldPropertyValue, newPropertyValue) -> {
+            if (!newPropertyValue) {
+                fillInputsBySelectedStockItem();
             }
         });
-        // TODO refresh view after adding new items
     }
+
     @FXML
     public void addProductClicked() {
         try {
@@ -66,91 +56,50 @@ public class StockController implements Initializable {
             String name = warehouseName.getText();
             String priceText = warehousePrice.getText();
             String quantityText = warehouseAmount.getText();
-            Long id;
-            if(barCode.isEmpty()){
-                List<Long> ids = getListOfIds();
-                if (ids.isEmpty()) {
-                    id = 1L;
-                } else {
-                    Optional<Long> maxId = ids.stream().max(Long::compare);
-                    id = maxId.orElse(0L) + 1;
-                }
-            } else {
-                id = Long.parseLong(barCode);
-            }
+
+            Long id = stockBasket.generateId(barCode);
             double price = Double.parseDouble(priceText);
             int quantity = Integer.parseInt(quantityText);
 
             if (price < 0) {
-                showError("Invalid price", "Price cant be a negative number.");
-                return;
-            }
-            else if (quantity <= 0) {
+                showError("Invalid price", "Price can't be a negative number.");
+                throw new SalesSystemException("Price cannot be a negative number.");
+            } else if (quantity <= 0) {
                 showError("Invalid amount", "Amount must be a positive number.");
-                return;
-            } else if (getListOfIds().contains(id)) {
-                if (updateProductQuantity(id, quantity, name, price)){
-                    warehouseBarCode.clear();
-                    warehouseName.clear();
-                    warehousePrice.clear();
-                    warehouseAmount.clear();
-                    return;
-                } else {
-                    showError("Invalid barcode", "Barcode must be  different from other items");
-                }
+                throw new SalesSystemException("Amount must be a positive number.");
             } else {
-                StockItem newItem = new StockItem(id, name, "", price, quantity);
-
-                dao.saveStockItem(newItem);
-                refreshStockItems();
+                boolean success = stockBasket.addProductToStock(id, name, price, quantity);
+                if (success) {
+                    resetProductFields();
+                    refreshStockItems();
+                } else {
+                    showError("Duplicate Barcode", "Barcode must be unique.");
+                    throw new SalesSystemException("Barcode must be unique. Duplicate barcode found.");
+                }
             }
-            resetProductField();
         } catch (NumberFormatException e) {
-        showError("Input error", "Price and amount must be valid numbers.");
+            showError("Input Error", "Price and amount must be valid numbers.");
+            throw new SalesSystemException("Price and amount must be valid numbers.", e);
         }
     }
-    public List<Long> getListOfIds() {
-        ObservableList<StockItem> stockItems = warehouseTableView.getItems();
 
-        return stockItems.stream().map(StockItem::getId).collect(Collectors.toList());
+    private void fillInputsBySelectedStockItem() {
+        StockItem stockItem = stockBasket.getStockItemByBarcode(warehouseBarCode.getText());
+        if (stockItem != null) {
+            warehouseName.setText(stockItem.getName());
+            warehousePrice.setText(String.valueOf(stockItem.getPrice()));
+        } else {
+            resetProductFields();
+        }
     }
-    private void resetProductField(){
+
+    private void resetProductFields() {
         warehouseBarCode.clear();
         warehouseName.clear();
         warehousePrice.clear();
         warehouseAmount.clear();
     }
-    private void fillInputsBySelectedStockItem() {
-        StockItem stockItem = getStockItemByBarcode();
-        if (stockItem != null) {
-            warehouseName.setText(stockItem.getName());
-            warehousePrice.setText(String.valueOf(stockItem.getPrice()));
-        } else {
-            resetProductField();
-        }
-    }
-    private StockItem getStockItemByBarcode() {
-        try {
-            long code = Long.parseLong(warehouseBarCode.getText());
-            return dao.findStockItem(code);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-    public boolean updateProductQuantity(Long id, int newQuantity, String name, double price) {
-        ObservableList<StockItem> stockItems = warehouseTableView.getItems();
-        for (StockItem item : stockItems) {
-            if (item.getId().equals(id)) {
-                if(item.getName().equals(name) & item.getPrice() == price){
-                    item.setQuantity(item.getQuantity() + newQuantity);
-                    refreshStockItems();
-                    return true;
-                }
-                return false;
-            }
-        }
-        return false;
-    }
+
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -158,13 +107,14 @@ public class StockController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     @FXML
     public void refreshButtonClicked() {
         refreshStockItems();
     }
 
     private void refreshStockItems() {
-        warehouseTableView.setItems(FXCollections.observableList(dao.findStockItems()));
+        warehouseTableView.setItems(FXCollections.observableList(stockBasket.getAllStockItems()));
         warehouseTableView.refresh();
     }
 }
