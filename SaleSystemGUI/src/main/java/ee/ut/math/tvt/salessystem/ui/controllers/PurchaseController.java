@@ -174,6 +174,8 @@ public class PurchaseController implements Initializable {
                 showError("Input error", e.getMessage());
             }
             purchaseTableView.refresh();
+
+
         }
     }
 

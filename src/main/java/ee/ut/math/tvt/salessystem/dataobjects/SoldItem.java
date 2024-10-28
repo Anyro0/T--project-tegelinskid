@@ -6,6 +6,7 @@ package ee.ut.math.tvt.salessystem.dataobjects;
  */
 public class SoldItem {
 
+    private double sum;
     private Long id;
     private StockItem stockItem;
     private String name;
@@ -71,8 +72,22 @@ public class SoldItem {
         this.stockItem = stockItem;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return String.format("SoldItem{id=%d, name='%s'}", id, name);
+    }
+
+     */
+
+    @Override
+    public String toString() {
+        return "SoldItem{" +
+                "sum=" + sum +
+                ", id=" + id +
+                ", stockItem=" + stockItem +
+                ", name='" + name + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
     }
 }
