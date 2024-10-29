@@ -120,7 +120,7 @@ public class PurchaseController implements Initializable {
             disableInputs();
             purchaseTableView.refresh();
         } catch (SalesSystemException e) {
-            log.error(e.getMessage(), e);
+            log.info("Couldn't cancel sale");
         }
     }
 
@@ -203,7 +203,7 @@ public class PurchaseController implements Initializable {
                 shoppingCart.addItem(new SoldItem(stockItem, 1));
                 purchaseTableView.refresh();
             } catch (SalesSystemException e) {
-                log.error("Error adding item to cart: {}", e.getMessage(), e);
+                log.info("Error adding item to cart");
                 showError("Input error", e.getMessage());
             }
         }
@@ -220,7 +220,7 @@ public class PurchaseController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-        log.error("Displayed error dialog - Title: {}, Message: {}", title, message);
+        log.info("Displayed error dialog - Title: {}, Message: {}", title, message);
     }
 
     /**

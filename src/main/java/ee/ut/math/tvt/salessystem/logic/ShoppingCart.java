@@ -29,7 +29,7 @@ public class ShoppingCart {
         log.debug("Warehouse quantity for {} is {}", item.getName(), warehouseQuantity);
 
         if (warehouseQuantity - item.getQuantity() < 0) {
-            log.error("Product quantity exceeds available stock for {}. Requested: {}, Available: {}", item.getName(), item.getQuantity(), warehouseQuantity);
+            log.info("Product quantity exceeds available stock for {}. Requested: {}, Available: {}", item.getName(), item.getQuantity(), warehouseQuantity);
             throw new SalesSystemException("Product amount exceeds what is available in stock");
         }
 
@@ -74,7 +74,7 @@ public class ShoppingCart {
             items.clear();
         } catch (Exception e) {
             dao.rollbackTransaction();
-            log.error("Error during purchase submission. Transaction rolled back.", e);
+            log.info("Error during purchase submission. Transaction rolled back.");
             throw e;
         }
     }

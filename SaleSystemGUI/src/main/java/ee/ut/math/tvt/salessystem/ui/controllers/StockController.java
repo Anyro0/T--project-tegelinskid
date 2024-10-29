@@ -74,13 +74,13 @@ public class StockController implements Initializable {
                 refreshStockItems();
             }
         } catch (InvalidPriceException e) {
-            log.error("Invalid price for product: {}", e.getMessage(), e);
+            log.info("Invalid price for product");
             showError("Invalid Price", e.getMessage());
         } catch (SalesSystemException e) {
-            log.error("Error adding product to stock: {}", e.getMessage(), e);
+            log.info("Error adding product to stock");
             showError("Error", e.getMessage());
         } catch (NumberFormatException e) {
-            log.error("Input error - Price and amount must be valid numbers. Entered Price: {}, Amount: {}", warehousePrice.getText(), warehouseAmount.getText());
+            log.info("Input error - Price and amount must be valid numbers. Entered Price: {}, Amount: {}", warehousePrice.getText(), warehouseAmount.getText());
             showError("Input Error", "Price and amount must be valid numbers.");
         }
     }
@@ -112,7 +112,7 @@ public class StockController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-        log.error("Displayed error dialog - Title: {}, Message: {}", title, message);
+        log.info("Displayed error dialog - Title: {}, Message: {}", title, message);
     }
 
     @FXML
