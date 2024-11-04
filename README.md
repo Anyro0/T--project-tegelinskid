@@ -31,6 +31,10 @@ https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-3
 ## Homework 4:
 Task 1: https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/12451841/Task+1.+The+debugger
 
+Tasks 2 - 4: https://tegelinskid.atlassian.net/jira/software/projects/KAN/issues/?jql=project%20%3D%20%22KAN%22%20ORDER%20BY%20created%20DESC
+
+https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework4
+
 ## Homework 5:
 <Links to the solution>
 
