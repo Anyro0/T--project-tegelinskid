@@ -48,7 +48,7 @@ public class SalesSystemUI extends Application {
         try {
             Tab purchaseTab = createTab("Point-of-sale", "PurchaseTab.fxml", new PurchaseController(dao, shoppingCart));
             Tab stockTab = createTab("Warehouse", "StockTab.fxml", new StockController(dao));
-            Tab historyTab = createTab("History", "HistoryTab.fxml", null);  // Update controller when available
+            Tab historyTab = createTab("History", "HistoryTab.fxml", new HistoryController(dao));  // Update controller when available
             Tab teamTab = createTab("Team", "TeamTab.fxml", new TeamController());
 
             // Set up the root layout
@@ -79,7 +79,8 @@ public class SalesSystemUI extends Application {
 
         try {
             log.debug("Loading controls for tab: {}", title);
-            tab.setContent(loadControls(fxml, controller));
+            Node content = loadControls(fxml, controller);
+            tab.setContent(content);
             log.info("Successfully loaded tab: {}", title);
         } catch (IOException e) {
             log.error("Error loading FXML file for tab '{}': {}", title, fxml, e);
@@ -87,7 +88,6 @@ public class SalesSystemUI extends Application {
 
         return tab;
     }
-
 
     private Node loadControls(String fxml, Initializable controller) throws IOException {
         log.debug("Attempting to load FXML file: {}", fxml);
@@ -99,9 +99,25 @@ public class SalesSystemUI extends Application {
         }
 
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
-        fxmlLoader.setController(controller);
+
+        if (controller != null) {
+            fxmlLoader.setController(controller);
+        } else {
+            // Use a controller factory for controllers with parameters
+            fxmlLoader.setControllerFactory(param -> {
+                if (param == HistoryController.class) {
+                    return new HistoryController(dao);
+                }
+                try {
+                    return param.getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
         return fxmlLoader.load();
     }
 }
+
 
 

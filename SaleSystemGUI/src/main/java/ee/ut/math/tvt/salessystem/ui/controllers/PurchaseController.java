@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.controllers;
 
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
@@ -16,6 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -131,13 +134,16 @@ public class PurchaseController implements Initializable {
     protected void submitPurchaseButtonClicked() {
         log.info("Sale complete");
         try {
-            log.debug("Contents of the current basket:\n" + shoppingCart.getAll());
+            List<SoldItem> items = new ArrayList<>(shoppingCart.getAll());
+            Purchase purchase = new Purchase(LocalDateTime.now(), items);
+            dao.savePurchase(purchase);
             shoppingCart.submitCurrentPurchase();
             disableInputs();
             purchaseTableView.refresh();
         } catch (SalesSystemException e) {
             log.error(e.getMessage(), e);
         }
+        log.info("dao Stock items" + dao.findStockItems());
     }
 
     // switch UI to the state that allows to proceed with the purchase

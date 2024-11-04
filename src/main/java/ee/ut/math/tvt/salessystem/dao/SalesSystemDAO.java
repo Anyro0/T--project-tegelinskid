@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.dao;
 
+import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 
@@ -40,9 +41,14 @@ public interface SalesSystemDAO {
 
     void saveSoldItem(SoldItem item);
 
+    List<Purchase> getPurchaseHistory();
+
+    void savePurchase(Purchase purchase);
+
     void beginTransaction();
 
     void rollbackTransaction();
 
     void commitTransaction();
+
 }
