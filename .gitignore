@@ -1,6 +1,6 @@
 # Ignore build directories
-#/build/
-#/SaleSystemGUI/build/
+/build/
+/SaleSystemGUI/build/
 
 # Ignore temporary files
 *.tmp
@@ -14,4 +14,17 @@
 # Ignore IntelliJ IDEA project files (optional, if you're using IntelliJ)
 /.idea/
 /*.iml
+
+.classpath
+.gradle
+.idea
+.project
+.settings
+bin/*
+build/*
+
+# Do not ignore the gradle folder and these two files
+!gradle/*
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 

@@ -1,0 +1,15 @@
+image: openjdk:21  # Use OpenJDK 21 as the base image
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: "Run Unit Tests"
+            caches:
+              - gradle  # Cache Gradle dependencies
+            script:
+              - microdnf install findutils  # Install findutils using microdnf
+              - chmod +x ./gradlew  # Ensure gradlew is executable
+              - ./gradlew test  # Run the tests using Gradle
+definitions:
+  caches:
+    gradle: ~/.gradle  # Cache for Gradle dependencies
