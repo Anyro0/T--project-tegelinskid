@@ -2,10 +2,12 @@ package ee.ut.math.tvt.salessystem.logic;
 
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,12 +65,21 @@ public class ShoppingCart {
 
     public void submitCurrentPurchase() {
         log.info("Submitting current purchase with {} items.", items.size());
+
+        // Create a new Purchase object to record this transaction
+        Purchase purchase = new Purchase(LocalDateTime.now(), items);
+
         dao.beginTransaction();
         try {
+            // Save each SoldItem in the transaction
             for (SoldItem item : items) {
                 dao.saveSoldItem(item);
                 log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
             }
+
+            // Save the Purchase as a complete transaction
+            dao.savePurchase(purchase);
+
             dao.commitTransaction();
             log.info("Purchase submitted successfully. Clearing cart.");
             items.clear();
@@ -78,4 +89,5 @@ public class ShoppingCart {
             throw e;
         }
     }
+
 }

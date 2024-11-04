@@ -3,18 +3,23 @@ package ee.ut.math.tvt.salessystem.ui;
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.InMemorySalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
+import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.dataobjects.TeamInfo;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.PropertySource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * A simple CLI (limited functionality).
@@ -95,6 +100,9 @@ public class ConsoleUI {
         System.out.println("p\t\tPurchase the shopping cart");
         System.out.println("r\t\tReset the shopping cart");
         System.out.println("t\t\tView team info");
+        System.out.println("history all\tShow all purchase history");
+        System.out.println("history last10\tShow last 10 purchases");
+        System.out.println("history dates START END\tShow purchases between dates (format: yyyy-mm-dd)");
         System.out.println("-------------------------");
     }
 
@@ -129,6 +137,11 @@ public class ConsoleUI {
                         log.warn("Invalid add command format: {}", command);
                     }
                 }
+                case "history" -> {
+                    if (c.length == 2 && c[1].equals("all")) showHistoryAll();
+                    else if (c.length == 2 && c[1].equals("last10")) showHistoryLast10();
+                    else if (c.length == 3) showHistoryBetweenDates(c[1], c[2]);
+                }
                 default -> {
                     log.warn("Unknown command: {}", command);
                     System.out.println("Unknown command");
@@ -161,5 +174,48 @@ public class ConsoleUI {
         System.out.println("Team Contact Person: " + ti.getContactPerson());
         System.out.println("Team members: " + System.lineSeparator() + ti.getTeamMembers());
         System.out.println("Team members emails: " + System.lineSeparator() + ti.getTeamMembersEmails());
+    }
+    private void showHistoryAll() {
+        List<Purchase> purchases = dao.getPurchaseHistory();
+        displayPurchaseHistory(purchases);
+    }
+
+    private void showHistoryLast10() {
+        List<Purchase> purchases = dao.getPurchaseHistory().stream()
+                .sorted(Comparator.comparing(Purchase::getDateTime).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+        displayPurchaseHistory(purchases);
+    }
+
+    private void showHistoryBetweenDates(String start, String end) {
+        try {
+            LocalDate startDate = LocalDate.parse(start);
+            LocalDate endDate = LocalDate.parse(end);
+
+            List<Purchase> purchases = dao.getPurchaseHistory().stream()
+                    .filter(p -> !p.getDateTime().toLocalDate().isBefore(startDate) &&
+                            !p.getDateTime().toLocalDate().isAfter(endDate))
+                    .sorted(Comparator.comparing(Purchase::getDateTime).reversed())
+                    .collect(Collectors.toList());
+            displayPurchaseHistory(purchases);
+
+        } catch (Exception e) {
+            System.out.println("Invalid date format. Please use yyyy-mm-dd.");
+            log.error("Error parsing dates", e);
+        }
+    }
+    private void displayPurchaseHistory(List<Purchase> purchases) {
+        if (purchases.isEmpty()) {
+            System.out.println("No purchases found.");
+        } else {
+            System.out.println("Purchase History:");
+            for (Purchase purchase : purchases) {
+                System.out.println("Date: " + purchase.getDateTime().toLocalDate() +
+                        ", Time: " + purchase.getDateTime().toLocalTime() +
+                        ", Total: " + purchase.getTotal());
+
+            }
+        }
     }
 }
