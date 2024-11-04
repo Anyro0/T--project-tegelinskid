@@ -10,22 +10,20 @@ import ee.ut.math.tvt.salessystem.logic.StockBasket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.*;
 import org.mockito.InOrder;
-import org.mockito.Mock;
-
-import java.util.List;
 
 public class StockBasketTest {
-    @Mock
+    private SalesSystemDAO mockdao;
+    private StockBasket mockStockBasket;
     private SalesSystemDAO dao;
 
     private StockBasket stockBasket;
 
-    private StockItem stockItem;
     @BeforeEach
     public void setUp() {
-        stockItem = new StockItem(81L,"Lasd chips","",2,-5);
         dao = new InMemorySalesSystemDAO();
         stockBasket = new StockBasket(dao);
+        mockdao = mock(SalesSystemDAO.class);
+        mockStockBasket = new StockBasket(mockdao);
     }
     @Test
     public void testAddingItemWithNegativeQuantity() {
@@ -35,21 +33,22 @@ public class StockBasketTest {
     }
     @Test
     public void testAddingNewItem () {
-        List<StockItem> ids = dao.findStockItems();
-        assertTrue(stockBasket.addProductToStock(ids.getLast().getId()+1, "uusim asi", 2, 1));
+        int exp = dao.findStockItems().size() + 1;
+        stockBasket.addProductToStock(stockBasket.getListOfIds().getLast()+1,"asi",4,2);
+        assertEquals(exp,dao.findStockItems().size());
     }
     @Test
     public void testAddingExistingItem () {
-        StockItem test = dao.findStockItem(1L);
-        int exp = test.getQuantity() + 5;
-        stockBasket.updateProductQuantity(1L,5,test.getName(),test.getPrice());
-        assertEquals(exp,dao.findStockItem(1L).getQuantity());
+        StockItem test = dao.findStockItems().getFirst();
+        int expQuantity = test.getQuantity() + 5;
+        int expSize = dao.findStockItems().size();
+        stockBasket.addProductToStock(test.getId(), test.getName(), test.getPrice(),5);
+        assertEquals(expQuantity,dao.findStockItem(test.getId()).getQuantity());
+        assertEquals(expSize,dao.findStockItems().size());
     }
     @Test
     public void testAddingItemBeginsAndCommitsTransaction () {
-        SalesSystemDAO mockdao = mock(SalesSystemDAO.class);
-        stockBasket = new StockBasket(mockdao);
-        stockBasket.addProductToStock(1L,"",1,1);
+        mockStockBasket.addProductToStock(1L,"",1,1);
         verify(mockdao, times(1)).beginTransaction();
         verify(mockdao, times(1)).commitTransaction();
         InOrder inOrder = inOrder(mockdao);
