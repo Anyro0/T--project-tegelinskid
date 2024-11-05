@@ -136,7 +136,7 @@ public class PurchaseController implements Initializable {
         try {
             List<SoldItem> items = new ArrayList<>(shoppingCart.getAll());
             Purchase purchase = new Purchase(LocalDateTime.now(), items);
-            dao.savePurchase(purchase);
+            //dao.savePurchase(purchase);
             shoppingCart.submitCurrentPurchase();
             disableInputs();
             purchaseTableView.refresh();

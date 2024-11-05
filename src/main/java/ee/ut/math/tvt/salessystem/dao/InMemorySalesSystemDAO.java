@@ -46,6 +46,19 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     @Override
     public void savePurchase(Purchase purchase) {
         purchaseHistory.add(purchase);
+        List<SoldItem> a = purchase.getSoldItems();
+
+        /**
+         * Most efficient algoritm
+         */
+        for (SoldItem soldItem : a) {
+            for (StockItem stockItem : stockItemList) {
+                if (soldItem.getStockItem().getId() == stockItem.getId()){
+                    stockItem.setQuantity(stockItem.getQuantity() - soldItem.getQuantity());
+                    break;
+                }
+            }
+        }
     }
 
 
