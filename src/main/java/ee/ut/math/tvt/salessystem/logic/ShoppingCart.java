@@ -55,7 +55,7 @@ public class ShoppingCart {
 
     public List<SoldItem> getAll() {
         log.debug("Retrieving all items from cart. Current size: {}", items.size());
-        return items;
+        return items != null ? items : new ArrayList<>();
     }
 
     public void cancelCurrentPurchase() {

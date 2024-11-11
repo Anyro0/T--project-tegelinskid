@@ -13,9 +13,59 @@ Class-Path: file:/Users/robyniusmaximus/Downloads/tarkvaraarendus/lg-8-t
  f25bbf0832d2b7bf/javafx-fxml-17-mac.jar file:/Users/robyniusmaximus/.gr
  adle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/17/e73acf69
  5ffccb4f904ff7b76de8999eefb547c2/javafx-controls-17-mac.jar file:/Users
- /robyniusmaximus/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-
- graphics/17/8b1d1124ce83e874db390016913fba7708f3592d/javafx-graphics-17
- -mac.jar file:/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1
- /org.openjfx/javafx-base/17/61d52392b063be78f7cc1b0fbfc04dda7a835a15/ja
- vafx-base-17-mac.jar
+ /robyniusmaximus/.gradle/caches/modules-2/files-2.1/org.hsqldb/hsqldb/2
+ .6.1/e626f8231592da1862fac632a6230752cf69b8e9/hsqldb-2.6.1.jar file:/Us
+ ers/robyniusmaximus/.gradle/caches/modules-2/files-2.1/org.hibernate.or
+ m/hibernate-core/6.2.2.Final/56cacc4b7b1c887174c73e9c206bdef6272f87e7/h
+ ibernate-core-6.2.2.Final.jar file:/Users/robyniusmaximus/.gradle/cache
+ s/modules-2/files-2.1/jakarta.persistence/jakarta.persistence-api/3.1.0
+ /66901fa1c373c6aff65c13791cc11da72060a8d6/jakarta.persistence-api-3.1.0
+ .jar file:/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1/org
+ .apache.commons/commons-dbcp2/2.9.0/16d808749cf3dac900c073dd834b5e28856
+ 2a59c/commons-dbcp2-2.9.0.jar file:/Users/robyniusmaximus/.gradle/cache
+ s/modules-2/files-2.1/org.openjfx/javafx-graphics/17/8b1d1124ce83e874db
+ 390016913fba7708f3592d/javafx-graphics-17-mac.jar file:/Users/robyniusm
+ aximus/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-po
+ ol2/2.10.0/dd571e1d24e3994ec2b8c45f08ca43eed11f2c0d/commons-pool2-2.10.
+ 0.jar file:/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1/co
+ mmons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955
+ 686/commons-logging-1.2.jar file:/Users/robyniusmaximus/.gradle/caches/
+ modules-2/files-2.1/org.openjfx/javafx-base/17/61d52392b063be78f7cc1b0f
+ bfc04dda7a835a15/javafx-base-17-mac.jar file:/Users/robyniusmaximus/.gr
+ adle/caches/modules-2/files-2.1/jakarta.transaction/jakarta.transaction
+ -api/2.0.1/51a520e3fae406abb84e2e1148e6746ce3f80a1a/jakarta.transaction
+ -api-2.0.1.jar file:/Users/robyniusmaximus/.gradle/caches/modules-2/fil
+ es-2.1/org.jboss.logging/jboss-logging/3.5.0.Final/c19307cc11f28f5e2679
+ 347e633a3294d865334d/jboss-logging-3.5.0.Final.jar file:/Users/robynius
+ maximus/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hiberna
+ te-commons-annotations/6.0.6.Final/77a5f94b56d49508e0ee334751db5b78e5cc
+ d50c/hibernate-commons-annotations-6.0.6.Final.jar file:/Users/robynius
+ maximus/.gradle/caches/modules-2/files-2.1/io.smallrye/jandex/3.0.5/c54
+ 8a4871b552292dbdd65409d3fda145c8925c1/jandex-3.0.5.jar file:/Users/roby
+ niusmaximus/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/
+ 1.5.1/3fe0bed568c62df5e89f4f174c101eab25345b6c/classmate-1.5.1.jar file
+ :/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1/net.bytebudd
+ y/byte-buddy/1.12.18/875a9c3f29d2f6f499dfd60d76e97a343f9b1233/byte-budd
+ y-1.12.18.jar file:/Users/robyniusmaximus/.gradle/caches/modules-2/file
+ s-2.1/org.glassfish.jaxb/jaxb-runtime/4.0.2/e4e4e0c5b0d42054d00dc402390
+ 1572a60d368c7/jaxb-runtime-4.0.2.jar file:/Users/robyniusmaximus/.gradl
+ e/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-core/4.0.2/8c29249
+ f6c10f4ee08967783831580b0f5c5360/jaxb-core-4.0.2.jar file:/Users/robyni
+ usmaximus/.gradle/caches/modules-2/files-2.1/jakarta.xml.bind/jakarta.x
+ ml.bind-api/4.0.0/bbb399208d288b15ec101fa4fcfc4bd77cedc97a/jakarta.xml.
+ bind-api-4.0.0.jar file:/Users/robyniusmaximus/.gradle/caches/modules-2
+ /files-2.1/jakarta.inject/jakarta.inject-api/2.0.1/4c28afe1991a941d7702
+ fe1362c365f0a8641d1e/jakarta.inject-api-2.0.1.jar file:/Users/robyniusm
+ aximus/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.10
+ .1/10839f875928f59c622d675091d51a43ea0dc5f7/antlr4-runtime-4.10.1.jar f
+ ile:/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1/org.eclip
+ se.angus/angus-activation/2.0.0/72369f4e2314d38de2dcbb277141ef0226f7315
+ 1/angus-activation-2.0.0.jar file:/Users/robyniusmaximus/.gradle/caches
+ /modules-2/files-2.1/jakarta.activation/jakarta.activation-api/2.1.1/88
+ c774ab863a21fb2fc4219af95379fafe499a31/jakarta.activation-api-2.1.1.jar
+  file:/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1/org.gla
+ ssfish.jaxb/txw2/4.0.2/24e167be69c29ebb7ee0a3b1f9b546f1dfd111fc/txw2-4.
+ 0.2.jar file:/Users/robyniusmaximus/.gradle/caches/modules-2/files-2.1/
+ com.sun.istack/istack-commons-runtime/4.1.1/9b3769c76235bc283b060da4fae
+ 2318c6d53f07e/istack-commons-runtime-4.1.1.jar
 

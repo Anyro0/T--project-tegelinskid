@@ -8,6 +8,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,11 +66,19 @@ public class PurchaseController implements Initializable {
         log.info("Initializing PurchaseController");
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
-        purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
+        ObservableList items = FXCollections.observableList(
+                shoppingCart.getAll() != null ? shoppingCart.getAll() : new ArrayList<>()
+        );
+        purchaseTableView.setItems(items);
+
         disableProductField(true);
 
         choiceBoxItems = dao.findStockItemsNames();
-        nameField.getItems().addAll(choiceBoxItems);
+        if (choiceBoxItems != null) {
+            nameField.getItems().addAll(choiceBoxItems);
+        } else {
+            log.warn("No items found for choice box.");
+        }
         nameField.setOnAction(this::nameFieldChanged);
 
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {

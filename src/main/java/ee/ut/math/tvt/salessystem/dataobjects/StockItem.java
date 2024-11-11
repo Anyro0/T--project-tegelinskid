@@ -1,12 +1,21 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  * Stock item.
  */
+@Entity
+@Table(name = "STOCKITEM")
 public class StockItem {
-
+    @Id
     private Long id;
+    @Column(name = "NAME")
     private String name;
+    @Column()
     private double price;
     private String description;
     private int quantity;

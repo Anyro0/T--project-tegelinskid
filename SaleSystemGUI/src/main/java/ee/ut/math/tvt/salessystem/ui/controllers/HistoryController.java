@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -105,8 +106,14 @@ public class HistoryController implements Initializable {
     }
 
     private void refreshPurchaseTable() {
-        ObservableList<Purchase> purchases = FXCollections.observableArrayList(dao.getPurchaseHistory());
-        purchaseTable.setItems(purchases);
+        List<Purchase> purchases = dao.getPurchaseHistory();
+
+        if (purchases == null) {
+            purchases = new ArrayList<>();
+        }
+
+        ObservableList<Purchase> observablePurchases = FXCollections.observableArrayList(purchases);
+        purchaseTable.setItems(observablePurchases);
     }
 
     private void showPurchaseDetails(Purchase purchase) {
