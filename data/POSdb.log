@@ -1,0 +1,8 @@
+/*C4*/SET SCHEMA PUBLIC
+drop table if exists SOLDITEM cascade 
+drop table if exists STOCKITEM cascade 
+drop sequence SOLDITEM_SEQ if exists
+create sequence SOLDITEM_SEQ start with 1 increment by 50
+create table SOLDITEM (PRICE float(53), QUANTITY integer, SUMMA float(53), id bigint not null, NAME varchar(255), primary key (id))
+create table STOCKITEM (price float(53), quantity integer not null, id bigint not null, NAME varchar(255), description varchar(255), primary key (id))
+DISCONNECT

@@ -19,17 +19,22 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 task hsql(type: JavaExec) {
-    group = 'Database'
-    description = 'Starts the HSQLDB database server'
-    mainClass = 'org.hsqldb.Server'
+    main = "org.hsqldb.Server"
     classpath = sourceSets.main.runtimeClasspath
-    args = ['--database.0', 'file:mydb', '--dbname.0', 'testdb']
+    def databasePath = "${projectDir}/data/POSdb"
+    args = ["-database.0", "${databasePath}", "-dbname.0", "POS"]
     doLast {
         println 'HSQLDB server is running in the background.'
     }
 }
 test {
     useJUnitPlatform() // Tell Gradle to use JUnit 5 for tests
+}
+
+task dbmanager(dependsOn: 'classes', type: JavaExec) {
+    main = "org.hsqldb.util.DatabaseManagerSwing"
+    classpath = sourceSets.main.runtimeClasspath
+    args = ["--user", "sa", "--url", "jdbc:hsqldb:hsql://localhost/POS"]
 }
 
 
