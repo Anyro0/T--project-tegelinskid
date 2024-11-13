@@ -120,7 +120,7 @@ public class PurchaseController implements Initializable {
             //ChoiceBOX refresh
             choiceBoxItems = dao.findStockItemsNames();
             if (choiceBoxItems != null) {
-                nameField.getItems().addAll(choiceBoxItems);
+                nameField.getItems().setAll(choiceBoxItems);
             } else {
                 log.warn("No items found for choice box.");
             }
