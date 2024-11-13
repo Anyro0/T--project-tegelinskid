@@ -12,16 +12,16 @@ public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final long id;
+    private long id;
 
     @Column(name = "DATE_TIME", nullable = false)
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private final List<SoldItem> soldItems;
+    private List<SoldItem> soldItems;
 
     @Transient
-    private final double total;
+    private double total;
 
     // No-arg constructor for JPA
     public Purchase() {
