@@ -1,11 +1,5 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving history.
@@ -17,10 +11,10 @@ public class SoldItem {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "SUMMA")
+    @Column(name = "SUM")
     private double sum;
-
-    @Transient
+    @OneToOne
+    @JoinColumn(name = "STOCK_ITEM_ID", referencedColumnName = "id")
     private StockItem stockItem;
     @Column(name = "NAME")
     private String name;

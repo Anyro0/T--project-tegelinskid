@@ -1,9 +1,6 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * Stock item.
@@ -11,14 +8,24 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "STOCKITEM")
 public class StockItem {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
-    @Column(name = "NAME")
+
+    @Column(name = "NAME", nullable = false)
     private String name;
-    @Column()
+
+    @Column(name = "PRICE", nullable = false)
     private double price;
+
+    @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "QUANTITY", nullable = false)
     private int quantity;
+
 
     public StockItem() {
     }
