@@ -19,7 +19,6 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO{
         emf = Persistence.createEntityManagerFactory ("POS");
         em = emf.createEntityManager ();
     }
-    // TODO implement missing methods
 
     @Override
     public List<StockItem> findStockItems() {

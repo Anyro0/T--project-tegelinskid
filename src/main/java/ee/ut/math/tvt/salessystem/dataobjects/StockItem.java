@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 public class StockItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
 
