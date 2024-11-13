@@ -116,6 +116,15 @@ public class PurchaseController implements Initializable {
         log.info("New sale process started");
         try {
             enableInputs();
+
+            //ChoiceBOX refresh
+            choiceBoxItems = dao.findStockItemsNames();
+            if (choiceBoxItems != null) {
+                nameField.getItems().addAll(choiceBoxItems);
+            } else {
+                log.warn("No items found for choice box.");
+            }
+
         } catch (SalesSystemException e) {
             log.error(e.getMessage(), e);
         }

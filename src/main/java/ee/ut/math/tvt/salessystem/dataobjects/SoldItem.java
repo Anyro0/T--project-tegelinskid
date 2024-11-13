@@ -13,8 +13,8 @@ public class SoldItem {
     private Long id;
     @Column(name = "SUM")
     private double sum;
-    @OneToOne
-    @JoinColumn(name = "STOCK_ITEM_ID", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "STOCK_ITEM_ID", referencedColumnName = "id", nullable = false)
     private StockItem stockItem;
     @Column(name = "NAME")
     private String name;
@@ -50,8 +50,10 @@ public class SoldItem {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
+
+    public Long getStockItemID() { return this.stockItem.getId(); }
 
     public void setId(Long id) {
         this.id = id;
@@ -103,12 +105,13 @@ public class SoldItem {
     @Override
     public String toString() {
         return "SoldItem{" +
-                "sum=" + sum +
-                ", id=" + id +
+                "id=" + id +
+                ", sum=" + sum +
                 ", stockItem=" + stockItem +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
+                ", purchase=" + purchase +
                 '}';
     }
 }

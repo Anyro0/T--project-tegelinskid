@@ -29,10 +29,8 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO{
     public List<String> findStockItemsNames() {
         return em.createQuery("SELECT s.name FROM StockItem s", String.class).getResultList();
     }
-
     @Override
-    public void savePurchase(Purchase purchase) {
-        // Update the stock quantities
+    public void updateQuantity(Purchase purchase) {
         for (SoldItem soldItem : purchase.getSoldItems()) {
             StockItem stockItem = soldItem.getStockItem();
             int newQuantity = stockItem.getQuantity() - soldItem.getQuantity();
@@ -42,8 +40,16 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO{
             stockItem.setQuantity(newQuantity);
             em.merge(stockItem);
         }
-        // Save the purchase (which will cascade to sold items)
+    }
+
+    @Override
+    public void savePurchase(Purchase purchase) {
         em.persist(purchase);
+    }
+
+    @Override
+    public void mergePurchase(Purchase purchase){
+        em.merge(purchase);
     }
 
     @Override
