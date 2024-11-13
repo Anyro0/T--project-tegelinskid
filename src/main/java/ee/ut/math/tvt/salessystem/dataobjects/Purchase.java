@@ -8,31 +8,31 @@ import java.util.List;
 @Entity
 @Table(name = "PURCHASE")
 public class Purchase {
-    private static long idCounter = 0; // Simple counter to generate unique IDs
+    //private static long idCounter = 0; // Simple counter to generate unique IDs
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final long id;
+    private long id;
 
     @Column(name = "DATE_TIME", nullable = false)
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private final List<SoldItem> soldItems;
+    private List<SoldItem> soldItems;
 
     @Transient
-    private final double total;
+    private double total;
 
     // No-arg constructor for JPA
     public Purchase() {
-        this.id = ++idCounter;
+        //this.id = ++idCounter;
         this.dateTime = LocalDateTime.now();
         this.soldItems = null;
         this.total = 0.0;
     }
 
     public Purchase(LocalDateTime now, List<SoldItem> soldItems) {
-        this.id = ++idCounter;
+        //this.id = ++idCounter;
         this.dateTime = LocalDateTime.now(); // Set the current date and time
         this.soldItems = soldItems;
         this.total = calculateTotal();

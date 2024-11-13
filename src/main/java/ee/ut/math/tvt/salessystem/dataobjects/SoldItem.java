@@ -22,6 +22,10 @@ public class SoldItem {
     private Integer quantity;
     @Column(name = "PRICE")
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "PURCHASE_ID")
+    private Purchase purchase;
+
 
     public SoldItem() {
     }
@@ -37,6 +41,13 @@ public class SoldItem {
         return this.stockItem.getId().equals(newItem.getStockItem().getId());
     }
 
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
+    }
+
+    public Purchase getPurchase(){
+        return this.purchase;
+    }
 
     public Long getId() {
         return id;

@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 
 import java.util.ArrayList;
@@ -20,89 +21,65 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO{
     }
     // TODO implement missing methods
 
-    //TODO
     @Override
     public List<StockItem> findStockItems() {
-        return null;
+        return em.createQuery("FROM StockItem", StockItem.class).getResultList();
     }
 
-    //TODO
     @Override
     public List<String> findStockItemsNames() {
-        /*
-        List<String> returnable = new ArrayList<>(soldItemList.size());
-        for (StockItem stockItem : stockItemList) {
-            returnable.add(stockItem.getName());
-        }
-        return returnable;
-
-         */
-        return null;
+        return em.createQuery("SELECT s.name FROM StockItem s", String.class).getResultList();
     }
-
-    //TODO
 
     @Override
     public void savePurchase(Purchase purchase) {
-        /*purchaseHistory.add(purchase);
-        List<SoldItem> a = purchase.getSoldItems();
-
-        for (SoldItem soldItem : a) {
-            for (StockItem stockItem : stockItemList) {
-                if (soldItem.getStockItem().getId() == stockItem.getId()){
-                    stockItem.setQuantity(stockItem.getQuantity() - soldItem.getQuantity());
-                    break;
-                }
+        // Update the stock quantities
+        for (SoldItem soldItem : purchase.getSoldItems()) {
+            StockItem stockItem = soldItem.getStockItem();
+            int newQuantity = stockItem.getQuantity() - soldItem.getQuantity();
+            if (newQuantity < 0) {
+                throw new IllegalArgumentException("Not enough stock for item: " + stockItem.getName());
             }
+            stockItem.setQuantity(newQuantity);
+            em.merge(stockItem);
         }
-        */
+        // Save the purchase (which will cascade to sold items)
+        em.persist(purchase);
     }
 
-    //TODO
     @Override
     public List<Purchase> getPurchaseHistory() {
-
-        //return purchaseHistory;
-        return null;
+        return em.createQuery("FROM Purchase", Purchase.class).getResultList();
     }
 
-    //TODO
     @Override
     public StockItem findStockItem(long id) {
-        /*
-        for (StockItem item : stockItemList) {
-            if (item.getId() == id)
-                return item;
-        }
-        return null;
-
-         */
-        return null;
+        return em.find(StockItem.class, id);
     }
 
-    //TODO
     @Override
-    public StockItem findStockItem(String name){
-        /*
-        for (StockItem stockItem : stockItemList) {
-            if (name.equals(stockItem.getName())) return stockItem;
+    public StockItem findStockItem(String name) {
+        try {
+            return em.createQuery("FROM StockItem s WHERE s.name = :name", StockItem.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
-        return null;
-         */
-        return null;
     }
 
-    //TODO
     @Override
     public void saveStockItem(StockItem stockItem) {
-        //stockItemList.add(stockItem);
-        return;
+        if (stockItem.getId() == null || em.find(StockItem.class, stockItem.getId()) == null) {
+            em.persist(stockItem);
+        } else {
+            em.merge(stockItem);
+        }
     }
 
-    //TODO
     @Override
     public void saveSoldItem(SoldItem item) {
-        //soldItemList.add(item);
+        em.persist(item);
     }
 
     public void close () {
