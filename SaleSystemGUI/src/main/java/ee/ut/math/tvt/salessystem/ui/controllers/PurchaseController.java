@@ -96,10 +96,10 @@ public class PurchaseController implements Initializable {
         String newName = nameField.getValue();
         log.debug("Name field changed to: {}", newName);
         StockItem stockItemWithTheSameName;
-        if(dao.findStockItem(newName) == null) {
+        if (dao.findStockItem(newName) == null) {
             barCodeField.setText("");
             priceField.setText("");
-            log.warn("No stock item found with name: {}", newName);
+            log.info("No stock item found with name: {}", "Empty String (\"\")");
         } else {
             stockItemWithTheSameName = dao.findStockItem(newName);
             barCodeField.setText(Long.toString(stockItemWithTheSameName.getId()));
@@ -109,8 +109,9 @@ public class PurchaseController implements Initializable {
     }
 
 
-
-    /** Event handler for the <code>new purchase</code> event. */
+    /**
+     * Event handler for the <code>new purchase</code> event.
+     */
     @FXML
     protected void newPurchaseButtonClicked() {
         log.info("New sale process started");
@@ -235,6 +236,7 @@ public class PurchaseController implements Initializable {
 
     /**
      * Copied this code from StockController, I think a new class should be made for error windows
+     *
      * @param title
      * @param message
      */
