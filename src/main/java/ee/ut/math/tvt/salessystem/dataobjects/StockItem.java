@@ -1,15 +1,30 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
 
+import jakarta.persistence.*;
+
 /**
  * Stock item.
  */
+@Entity
+@Table(name = "STOCKITEM")
 public class StockItem {
 
+    @Id
+    @Column(name = "ID")
     private Long id;
+
+    @Column(name = "NAME", nullable = false)
     private String name;
+
+    @Column(name = "PRICE", nullable = false)
     private double price;
+
+    @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "QUANTITY", nullable = false)
     private int quantity;
+
 
     public StockItem() {
     }

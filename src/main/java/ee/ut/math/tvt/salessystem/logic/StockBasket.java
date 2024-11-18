@@ -7,6 +7,7 @@ import ee.ut.math.tvt.salessystem.InvalidPriceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,19 +21,24 @@ public class StockBasket {
     }
 
     public boolean addProductToStock(Long id, String name, double price, int quantity) throws SalesSystemException {
-        dao.beginTransaction();
-        validatePrice(price);
-        validateQuantity(quantity);
-        List<Long> ids = getListOfIds();
-        boolean temp = true;
-        if (ids.contains(id)) {
-            temp = updateProductQuantity(id, quantity, name, price);
-        } else {
-            StockItem newItem = new StockItem(id, name, "", price, quantity);
-            dao.saveStockItem(newItem);
+        try{
+            boolean temp = true;
+            dao.beginTransaction();
+            validatePrice(price);
+            validateQuantity(quantity);
+            List<Long> ids = getListOfIds();
+            if (ids.contains(id)) {
+                temp = updateProductQuantity(id, quantity, name, price);
+            } else {
+                StockItem newItem = new StockItem(id, name, "", price, quantity);
+                dao.saveStockItem(newItem);
+            }
+            dao.commitTransaction();
+            return temp;
+        } catch (Exception e) {
+            dao.rollbackTransaction();
+            throw e;
         }
-        dao.commitTransaction();
-        return temp;
     }
 
     public Long generateId(String barCode) throws SalesSystemException {
@@ -50,7 +56,7 @@ public class StockBasket {
 
     public List<Long> getListOfIds() {
         List<StockItem> stockItems = dao.findStockItems();
-        return stockItems.stream().map(StockItem::getId).collect(Collectors.toList());
+        return (stockItems != null) ? stockItems.stream().map(StockItem::getId).collect(Collectors.toList()) : new ArrayList<>();
     }
 
     public StockItem getStockItemByBarcode(String barCode) throws SalesSystemException {
@@ -66,6 +72,9 @@ public class StockBasket {
         validateQuantity(newQuantity);  // Ensure new quantity is valid
 
         List<StockItem> stockItems = dao.findStockItems();
+        if (stockItems == null) {
+            throw new SalesSystemException("Stock items could not be loaded.");
+        }
         for (StockItem item : stockItems) {
             if (item.getId().equals(id)) {
                 if (item.getName().equals(name) && item.getPrice() == price) {
@@ -79,7 +88,9 @@ public class StockBasket {
     }
 
     public List<StockItem> getAllStockItems() {
-        return dao.findStockItems();
+
+        List<StockItem> stockItems = dao.findStockItems();
+        return stockItems != null ? stockItems : new ArrayList<>();
     }
 
     // New methods to validate price and quantity

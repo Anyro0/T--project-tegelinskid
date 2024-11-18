@@ -8,6 +8,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,11 +66,19 @@ public class PurchaseController implements Initializable {
         log.info("Initializing PurchaseController");
         cancelPurchase.setDisable(true);
         submitPurchase.setDisable(true);
-        purchaseTableView.setItems(FXCollections.observableList(shoppingCart.getAll()));
+        ObservableList items = FXCollections.observableList(
+                shoppingCart.getAll() != null ? shoppingCart.getAll() : new ArrayList<>()
+        );
+        purchaseTableView.setItems(items);
+
         disableProductField(true);
 
         choiceBoxItems = dao.findStockItemsNames();
-        nameField.getItems().addAll(choiceBoxItems);
+        if (choiceBoxItems != null) {
+            nameField.getItems().addAll(choiceBoxItems);
+        } else {
+            log.warn("No items found for choice box.");
+        }
         nameField.setOnAction(this::nameFieldChanged);
 
         this.barCodeField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -87,10 +96,10 @@ public class PurchaseController implements Initializable {
         String newName = nameField.getValue();
         log.debug("Name field changed to: {}", newName);
         StockItem stockItemWithTheSameName;
-        if(dao.findStockItem(newName) == null) {
+        if (dao.findStockItem(newName) == null) {
             barCodeField.setText("");
             priceField.setText("");
-            log.warn("No stock item found with name: {}", newName);
+            log.info("No stock item found with name: {}", "Empty String (\"\")");
         } else {
             stockItemWithTheSameName = dao.findStockItem(newName);
             barCodeField.setText(Long.toString(stockItemWithTheSameName.getId()));
@@ -100,13 +109,23 @@ public class PurchaseController implements Initializable {
     }
 
 
-
-    /** Event handler for the <code>new purchase</code> event. */
+    /**
+     * Event handler for the <code>new purchase</code> event.
+     */
     @FXML
     protected void newPurchaseButtonClicked() {
         log.info("New sale process started");
         try {
             enableInputs();
+
+            //ChoiceBOX refresh
+            choiceBoxItems = dao.findStockItemsNames();
+            if (choiceBoxItems != null) {
+                nameField.getItems().setAll(choiceBoxItems);
+            } else {
+                log.warn("No items found for choice box.");
+            }
+
         } catch (SalesSystemException e) {
             log.error(e.getMessage(), e);
         }
@@ -217,6 +236,7 @@ public class PurchaseController implements Initializable {
 
     /**
      * Copied this code from StockController, I think a new class should be made for error windows
+     *
      * @param title
      * @param message
      */

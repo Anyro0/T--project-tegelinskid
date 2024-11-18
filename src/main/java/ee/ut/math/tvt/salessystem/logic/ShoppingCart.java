@@ -55,7 +55,7 @@ public class ShoppingCart {
 
     public List<SoldItem> getAll() {
         log.debug("Retrieving all items from cart. Current size: {}", items.size());
-        return items;
+        return items != null ? items : new ArrayList<>();
     }
 
     public void cancelCurrentPurchase() {
@@ -66,19 +66,32 @@ public class ShoppingCart {
     public void submitCurrentPurchase() {
         log.info("Submitting current purchase with {} items.", items.size());
 
-        // Create a new Purchase object to record this transaction
-        Purchase purchase = new Purchase(LocalDateTime.now(), items);
 
+        // Create a new Purchase object to record this transaction
+        Purchase purchase = new Purchase(LocalDateTime.now(), new ArrayList<>(items.size()));
+        //Purchase purchase = new Purchase(LocalDateTime.now(), items);
         dao.beginTransaction();
+        dao.savePurchase(purchase);
+
+
         try {
+
+            //dao.savePurchase(purchase);
+            List<SoldItem> IHateHibernate = new ArrayList<>(items.size());
             // Save each SoldItem in the transaction
             for (SoldItem item : items) {
+                item.setPurchase(purchase);
+                //System.out.println(item);
                 dao.saveSoldItem(item);
+
+                IHateHibernate.add(item);
+                purchase.setSoldItems(IHateHibernate);
                 log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
             }
 
+            dao.updateQuantity(purchase);
             // Save the Purchase as a complete transaction
-            dao.savePurchase(purchase);
+            dao.mergePurchase(purchase);
 
             dao.commitTransaction();
             log.info("Purchase submitted successfully. Clearing cart.");

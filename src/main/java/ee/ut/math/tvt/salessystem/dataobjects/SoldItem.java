@@ -1,17 +1,31 @@
 package ee.ut.math.tvt.salessystem.dataobjects;
-
+import jakarta.persistence.*;
 
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving history.
  */
-public class SoldItem {
 
-    private double sum;
+@Entity
+@Table(name ="SOLDITEM")
+public class SoldItem {
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "SUM")
+    private double sum;
+    @ManyToOne
+    @JoinColumn(name = "STOCK_ITEM_ID", referencedColumnName = "id", nullable = false)
     private StockItem stockItem;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "QUANTITY")
     private Integer quantity;
+    @Column(name = "PRICE")
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "PURCHASE_ID")
+    private Purchase purchase;
+
 
     public SoldItem() {
     }
@@ -27,10 +41,19 @@ public class SoldItem {
         return this.stockItem.getId().equals(newItem.getStockItem().getId());
     }
 
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
+    }
+
+    public Purchase getPurchase(){
+        return this.purchase;
+    }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
+
+    public Long getStockItemID() { return this.stockItem.getId(); }
 
     public void setId(Long id) {
         this.id = id;
@@ -82,12 +105,13 @@ public class SoldItem {
     @Override
     public String toString() {
         return "SoldItem{" +
-                "sum=" + sum +
-                ", id=" + id +
+                "id=" + id +
+                ", sum=" + sum +
                 ", stockItem=" + stockItem +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
+                ", purchase=" + purchase +
                 '}';
     }
 }
