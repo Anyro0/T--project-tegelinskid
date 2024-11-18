@@ -36,7 +36,7 @@ Tasks 2 - 4: https://tegelinskid.atlassian.net/jira/software/projects/KAN/issues
 https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework4
 
 ## Homework 5:
-<Links to the solution>
+https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-5
 
 ## Homework 6:
 <Links to the solution>

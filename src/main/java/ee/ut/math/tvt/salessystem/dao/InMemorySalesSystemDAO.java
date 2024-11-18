@@ -69,6 +69,16 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     }
 
     @Override
+    public void mergePurchase(Purchase purchase){
+
+    }
+
+    @Override
+    public void updateQuantity(Purchase purchase){
+
+    }
+
+    @Override
     public List<String> findStockItemsNames() {
         /*String[] returnable = new String[soldItemList.size()];
         for (int i = 0; i < soldItemList.size(); i++) {

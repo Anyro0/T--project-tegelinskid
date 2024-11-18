@@ -22,9 +22,9 @@ https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
             <property name="jakarta.persistence.jdbc.password" value=""/>-->
             <!-- Configure Hibernate to print out all the SQL commands that
            it is executing -->
-<!--            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>-->
+            <!--<property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="create"/>-->
             <!--             Schema generation settings: drop-and-create the database
                        tables -->
             <!-- the tables are created at application startup. all

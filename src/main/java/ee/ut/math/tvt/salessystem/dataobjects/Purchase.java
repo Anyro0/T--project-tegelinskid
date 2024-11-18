@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "PURCHASE")
 public class Purchase {
-    private static long idCounter = 0; // Simple counter to generate unique IDs
+    //private static long idCounter = 0; // Simple counter to generate unique IDs
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,19 +20,19 @@ public class Purchase {
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SoldItem> soldItems;
 
-    @Transient
+    @Column(name = "TOTAL")
     private double total;
 
     // No-arg constructor for JPA
     public Purchase() {
-        this.id = ++idCounter;
+        /*//this.id = ++idCounter;
         this.dateTime = LocalDateTime.now();
         this.soldItems = null;
-        this.total = 0.0;
+        this.total = 0.0;*/
     }
 
     public Purchase(LocalDateTime now, List<SoldItem> soldItems) {
-        this.id = ++idCounter;
+        //this.id = ++idCounter;
         this.dateTime = LocalDateTime.now(); // Set the current date and time
         this.soldItems = soldItems;
         this.total = calculateTotal();
@@ -55,7 +55,24 @@ public class Purchase {
     }
 
     public double getTotal() {
-        return total;
+        return calculateTotal();
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setSoldItems(List<SoldItem> soldItems) {
+        this.soldItems = soldItems;
+        this.total = calculateTotal();
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
     public String getDetailedPurchaseInfo() {
         StringBuilder sb = new StringBuilder();
@@ -70,5 +87,15 @@ public class Purchase {
         }
         sb.append("Total Purchase Amount: ").append(total).append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Purchase{" +
+                "id=" + id +
+                ", dateTime=" + dateTime +
+                ", soldItems=" + soldItems +
+                ", total=" + total +
+                '}';
     }
 }

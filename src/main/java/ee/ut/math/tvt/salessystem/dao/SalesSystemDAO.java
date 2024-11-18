@@ -41,11 +41,15 @@ public interface SalesSystemDAO {
 
     void saveSoldItem(SoldItem item);
 
+    void updateQuantity(Purchase purchase);
+
     List<Purchase> getPurchaseHistory();
 
     void savePurchase(Purchase purchase);
 
     void beginTransaction();
+
+    void mergePurchase(Purchase purchase);
 
     void rollbackTransaction();
 
