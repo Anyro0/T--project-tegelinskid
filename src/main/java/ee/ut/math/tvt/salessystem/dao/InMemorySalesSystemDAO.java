@@ -70,12 +70,30 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void mergePurchase(Purchase purchase){
+        Purchase uus = purchaseHistory.getLast();
+        List<SoldItem> a = purchase.getSoldItems();
+        for (SoldItem soldItem : a) {
+            for (StockItem stockItem : stockItemList) {
+                if (soldItem.getStockItem().getId() == stockItem.getId()){
+                    stockItem.setQuantity(stockItem.getQuantity() - soldItem.getQuantity());
+                    break;
+                }
+            }
+        }
+        uus.setSoldItems(a);
 
     }
 
     @Override
     public void updateQuantity(Purchase purchase){
-
+        for (SoldItem soldItem : purchase.getSoldItems()) {
+            StockItem stockItem = soldItem.getStockItem();
+            int newQuantity = stockItem.getQuantity() - soldItem.getQuantity();
+            if (newQuantity < 0) {
+                throw new IllegalArgumentException("Not enough stock for item: " + stockItem.getName());
+            }
+            stockItem.setQuantity(newQuantity);
+        }
     }
 
     @Override
