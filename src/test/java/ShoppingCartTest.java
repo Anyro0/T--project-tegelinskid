@@ -30,7 +30,7 @@ public class ShoppingCartTest {
         shoppingCart = new ShoppingCart(dao);
         mockdao = mock(SalesSystemDAO.class);
         mockShoppingCart = new ShoppingCart(mockdao);
-        stockItem = dao.findStockItem(1L);
+        stockItem = dao.findStockItems().getFirst();
         soldItem = new SoldItem(stockItem,1);
     }
     @Test
@@ -83,7 +83,7 @@ public class ShoppingCartTest {
     @Test
     public void testSubmittingCurrentPurchaseDecreasesStockItemQuantity () {
         //- check that submitting the current purchase decreases the quantity of all StockItems
-        int exp = stockItem.getQuantity() -1;
+        int exp = stockItem.getQuantity() - soldItem.getQuantity();
         shoppingCart.addItem(soldItem);
         shoppingCart.submitCurrentPurchase();
         assertEquals(exp,stockItem.getQuantity());
