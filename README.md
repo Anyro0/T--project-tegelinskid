@@ -39,7 +39,7 @@ https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework4
 https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-5
 
 ## Homework 6:
-<Links to the solution>
+Test plan: https://tegelinskid.atlassian.net/wiki/spaces/DELPHINUS/pages/18644993/Test+Plan
 
 ## Homework 7:
 <Links to the solution>
