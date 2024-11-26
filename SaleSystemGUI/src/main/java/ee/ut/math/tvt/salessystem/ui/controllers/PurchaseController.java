@@ -220,12 +220,15 @@ public class PurchaseController implements Initializable {
         if (stockItem != null) {
             try {
                 int quantity = Integer.parseInt(quantityField.getText());
+                if (quantity <= 0)
+                    throw new NumberFormatException(quantityField.getText());
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
                 log.debug("Added item to cart - StockItem: {}, Quantity: {}", stockItem.getName(), quantity);
                 purchaseTableView.refresh();
             } catch (NumberFormatException e) {
-                log.warn("Invalid quantity entered, defaulting to 1. Entered value: {}", quantityField.getText());
-                shoppingCart.addItem(new SoldItem(stockItem, 1));
+                log.warn("Invalid quantity entered, canceling adding item to shopping cart. Entered value: {}", quantityField.getText());
+                showError("Input error", "Invalid quantity entered, canceling adding item to shopping cart. Entered value: " + e.getMessage());
+                //shoppingCart.addItem(new SoldItem(stockItem, 1));
                 purchaseTableView.refresh();
             } catch (SalesSystemException e) {
                 log.info("Error adding item to cart");
