@@ -2,7 +2,6 @@ package ee.ut.math.tvt.salessystem.ui.controllers;
 
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
-import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.logic.ShoppingCart;
@@ -18,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -153,9 +151,6 @@ public class PurchaseController implements Initializable {
     protected void submitPurchaseButtonClicked() {
         log.info("Sale complete");
         try {
-            List<SoldItem> items = new ArrayList<>(shoppingCart.getAll());
-            Purchase purchase = new Purchase(LocalDateTime.now(), items);
-            //dao.savePurchase(purchase);
             shoppingCart.submitCurrentPurchase();
             disableInputs();
             purchaseTableView.refresh();
@@ -219,16 +214,18 @@ public class PurchaseController implements Initializable {
         StockItem stockItem = getStockItemByBarcode();
         if (stockItem != null) {
             try {
+
                 int quantity = Integer.parseInt(quantityField.getText());
                 if (quantity <= 0)
                     throw new NumberFormatException(quantityField.getText());
+
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
                 log.debug("Added item to cart - StockItem: {}, Quantity: {}", stockItem.getName(), quantity);
                 purchaseTableView.refresh();
+
             } catch (NumberFormatException e) {
                 log.warn("Invalid quantity entered, canceling adding item to shopping cart. Entered value: {}", quantityField.getText());
                 showError("Input error", "Invalid quantity entered, canceling adding item to shopping cart. Entered value: " + e.getMessage());
-                //shoppingCart.addItem(new SoldItem(stockItem, 1));
                 purchaseTableView.refresh();
             } catch (SalesSystemException e) {
                 log.info("Error adding item to cart");
@@ -238,10 +235,10 @@ public class PurchaseController implements Initializable {
     }
 
     /**
-     * Copied this code from StockController, I think a new class should be made for error windows
+     * Show new alert window with error message
      *
-     * @param title
-     * @param message
+     * @param title title of window box
+     * @param message message in the error window
      */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
