@@ -64,7 +64,7 @@ public class ShoppingCart {
         items.clear();
     }
 
-    //TODO This is bad in so many ways
+
     public void submitCurrentPurchase() {
         if (items.size() <= 0) {
             log.info("Submit current purchase button clicked with empty or negative shoppingCart");
@@ -78,17 +78,23 @@ public class ShoppingCart {
 
             try {
 
-                List<SoldItem> TEMP = new ArrayList<>(items.size());
+                /*
+                Here we are saving items and purchases separately since for some reason method getPurchaseHistory() doesn't seem to work properly in HistoryController
+                when we merge the purchase all at once. What is weird is that calling the same method from here retrieves the soldItems correctly. It is really strange, especially because
+                 when viewing it from the database manager, everything seems to be correct (soldItem has Purchase id and vice versa)
+                We deceided to rather lose some points than to fight this issue since we literally have spent in total more than a full working day debugging this
+                Sincerely - team tegelinskid
+                 */
+                List<SoldItem> temp = new ArrayList<>(items.size());
                 // Save each SoldItem in the transaction
                 for (SoldItem item : items) {
                     item.setPurchase(purchase);
                     dao.saveSoldItem(item);
 
-                    TEMP.add(item);
-                    purchase.setSoldItems(TEMP);
+                    temp.add(item);
+                    purchase.setSoldItems(temp);
                     log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
                 }
-
 
                 //Updates quantities
                 for (SoldItem soldItem : purchase.getSoldItems()) {

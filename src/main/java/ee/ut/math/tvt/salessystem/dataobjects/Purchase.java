@@ -17,7 +17,7 @@ public class Purchase {
     @Column(name = "DATE_TIME", nullable = false)
     private LocalDateTime dateTime;
 
-    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SoldItem> soldItems;
 
     @Column(name = "TOTAL")
