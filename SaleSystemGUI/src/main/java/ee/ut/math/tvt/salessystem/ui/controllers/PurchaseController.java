@@ -99,10 +99,12 @@ public class PurchaseController implements Initializable {
             priceField.setText("");
             log.info("No stock item found with name: {}", "Empty String (\"\")");
         } else {
+            //Currently finds stockitem using name, meaning that product names have to be unique
+            //This is becuase nameField is a ChoiceBox datatype that does not accept SoldItem as an argument
             stockItemWithTheSameName = dao.findStockItem(newName);
             barCodeField.setText(Long.toString(stockItemWithTheSameName.getId()));
             priceField.setText(Double.toString(stockItemWithTheSameName.getPrice()));
-            log.debug("Stock item found - ID: {}, Price: {}", stockItemWithTheSameName.getId(), stockItemWithTheSameName.getPrice());
+            log.info("Stock item with name: {}, found id: - ID: {}, Price: {}, changed field values respectively", stockItemWithTheSameName.getName(), stockItemWithTheSameName.getId(), stockItemWithTheSameName.getPrice());
         }
     }
 
@@ -157,7 +159,7 @@ public class PurchaseController implements Initializable {
         } catch (SalesSystemException e) {
             log.error(e.getMessage(), e);
         }
-        log.info("dao Stock items" + dao.findStockItems());
+        log.info("Now dao Stock items: " + dao.findStockItems());
     }
 
     // switch UI to the state that allows to proceed with the purchase

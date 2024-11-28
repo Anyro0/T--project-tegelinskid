@@ -63,44 +63,48 @@ public class ShoppingCart {
         items.clear();
     }
 
+    //TODO This is bad in so many ways
     public void submitCurrentPurchase() {
-        log.info("Submitting current purchase with {} items.", items.size());
+        if (items.size() <= 0) {
+            log.info("Submit current purchase button clicked with empty or negative shoppingCart");
+        } else {
+            log.info("Submitting current purchase with {} items.", items.size());
 
 
-        // Create a new Purchase object to record this transaction
-        Purchase purchase = new Purchase(LocalDateTime.now(), new ArrayList<>(items.size()));
-        //Purchase purchase = new Purchase(LocalDateTime.now(), items);
-        dao.beginTransaction();
-        dao.savePurchase(purchase);
+            // Create a new Purchase object to record this transaction
+            Purchase purchase = new Purchase(LocalDateTime.now(), new ArrayList<>(items.size()));
+            //Purchase purchase = new Purchase(LocalDateTime.now(), items);
+            dao.beginTransaction();
+            dao.savePurchase(purchase);
 
 
-        try {
+            try {
 
-            //dao.savePurchase(purchase);
-            List<SoldItem> IHateHibernate = new ArrayList<>(items.size());
-            // Save each SoldItem in the transaction
-            for (SoldItem item : items) {
-                item.setPurchase(purchase);
-                //System.out.println(item);
-                dao.saveSoldItem(item);
+                //dao.savePurchase(purchase);
+                List<SoldItem> IHateHibernate = new ArrayList<>(items.size());
+                // Save each SoldItem in the transaction
+                for (SoldItem item : items) {
+                    item.setPurchase(purchase);
+                    //System.out.println(item);
+                    dao.saveSoldItem(item);
 
-                IHateHibernate.add(item);
-                purchase.setSoldItems(IHateHibernate);
-                log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
+                    IHateHibernate.add(item);
+                    purchase.setSoldItems(IHateHibernate);
+                    log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
+                }
+
+                dao.updateQuantity(purchase);
+                // Save the Purchase as a complete transaction
+                dao.mergePurchase(purchase);
+
+                dao.commitTransaction();
+                log.info("Purchase submitted successfully. Clearing cart.");
+                items.clear();
+            } catch (Exception e) {
+                dao.rollbackTransaction();
+                log.info("Error during purchase submission. Transaction rolled back.");
+                throw e;
             }
-
-            dao.updateQuantity(purchase);
-            // Save the Purchase as a complete transaction
-            dao.mergePurchase(purchase);
-
-            dao.commitTransaction();
-            log.info("Purchase submitted successfully. Clearing cart.");
-            items.clear();
-        } catch (Exception e) {
-            dao.rollbackTransaction();
-            log.info("Error during purchase submission. Transaction rolled back.");
-            throw e;
         }
     }
-
 }
