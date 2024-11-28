@@ -54,11 +54,21 @@ public class PurchaseController implements Initializable {
 
     private List<String> choiceBoxItems;
 
+    /**
+     * Encapsulates everything that has to do with the purchase tab (the tab
+     * labelled "Point-of-sale" in the menu).
+     */
     public PurchaseController(SalesSystemDAO dao, ShoppingCart shoppingCart) {
         this.dao = dao;
         this.shoppingCart = shoppingCart;
     }
 
+    /**
+     * Initializes the PurchaseController, sets up event handlers, and prepares the UI components.
+     *
+     * @param location  The location of the FXML file
+     * @param resources The resources for internationalization
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         log.info("Initializing PurchaseController");
@@ -90,6 +100,11 @@ public class PurchaseController implements Initializable {
         log.debug("PurchaseController initialized with DAO and ShoppingCart references");
     }
 
+    /**
+     * Handles the event when the name field changes, updates the UI based on the selected item.
+     *
+     * @param actionEvent The event triggered by changing the name field
+     */
     private void nameFieldChanged(ActionEvent actionEvent) {
         String newName = nameField.getValue();
         log.debug("Name field changed to: {}", newName);
@@ -162,7 +177,10 @@ public class PurchaseController implements Initializable {
         log.info("Now dao Stock items: " + dao.findStockItems());
     }
 
-    // switch UI to the state that allows to proceed with the purchase
+
+    /*
+    switch UI to the state that allows to proceed with the purchase
+     */
     private void enableInputs() {
         resetProductField();
         disableProductField(false);
@@ -172,7 +190,9 @@ public class PurchaseController implements Initializable {
         log.debug("Inputs enabled for a new purchase");
     }
 
-    // switch UI to the state that allows to initiate new purchase
+    /*
+    switch UI to the state that allows to initiate new purchase
+     */
     private void disableInputs() {
         resetProductField();
         cancelPurchase.setDisable(true);
@@ -182,6 +202,9 @@ public class PurchaseController implements Initializable {
         log.debug("Inputs disabled after sale submission or cancellation");
     }
 
+    /**
+     * Fills input fields based on the selected stock item using the barcode field.
+     */
     private void fillInputsBySelectedStockItem() {
         StockItem stockItem = getStockItemByBarcode();
         if (stockItem != null) {
@@ -194,8 +217,11 @@ public class PurchaseController implements Initializable {
         }
     }
 
-    // Search the warehouse for a StockItem with the bar code entered
-    // to the barCode textfield.
+    /**
+     * Searches for a stock item in the warehouse using the barcode entered in the barcode field.
+     *
+     * @return The found stock item or null if not found
+     */
     private StockItem getStockItemByBarcode() {
         try {
             long code = Long.parseLong(barCodeField.getText());
