@@ -104,7 +104,7 @@ public class SoldItem {
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
-                ", purchase=" + purchase +
+                //", purchase=" + purchase + //Stackoverflow error when addding purchase.toString() here
                 '}';
     }
 }

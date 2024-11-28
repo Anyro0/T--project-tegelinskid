@@ -74,25 +74,23 @@ public class ShoppingCart {
 
             // Create a new Purchase object to record this transaction
             Purchase purchase = new Purchase(LocalDateTime.now(), new ArrayList<>(items.size()));
-            //Purchase purchase = new Purchase(LocalDateTime.now(), items);
             dao.beginTransaction();
             dao.savePurchase(purchase);
 
 
             try {
 
-                //dao.savePurchase(purchase);
-                List<SoldItem> IHateHibernate = new ArrayList<>(items.size());
+                List<SoldItem> TEMP = new ArrayList<>(items.size());
                 // Save each SoldItem in the transaction
                 for (SoldItem item : items) {
                     item.setPurchase(purchase);
-                    //System.out.println(item);
                     dao.saveSoldItem(item);
 
-                    IHateHibernate.add(item);
-                    purchase.setSoldItems(IHateHibernate);
+                    TEMP.add(item);
+                    purchase.setSoldItems(TEMP);
                     log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
                 }
+
 
                 //Updates quantities
                 for (SoldItem soldItem : purchase.getSoldItems()) {
@@ -104,8 +102,10 @@ public class ShoppingCart {
                     stockItem.setQuantity(newQuantity);
                     dao.updateQuantity(stockItem);
                 }
+
                 // Save the Purchase as a complete transaction
                 dao.mergePurchase(purchase);
+
 
                 dao.commitTransaction();
                 log.info("Purchase submitted successfully. Clearing cart.");
