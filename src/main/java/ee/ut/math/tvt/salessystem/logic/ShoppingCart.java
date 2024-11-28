@@ -71,12 +71,10 @@ public class ShoppingCart {
         } else {
             log.info("Submitting current purchase with {} items.", items.size());
 
-
             // Create a new Purchase object to record this transaction
             Purchase purchase = new Purchase(LocalDateTime.now(), new ArrayList<>(items.size()));
             dao.beginTransaction();
             dao.savePurchase(purchase);
-
 
             try {
 

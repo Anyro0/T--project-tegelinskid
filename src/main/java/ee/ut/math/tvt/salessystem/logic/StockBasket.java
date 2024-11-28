@@ -4,15 +4,12 @@ import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.InvalidPriceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StockBasket {
-    private static final Logger log = LogManager.getLogger(StockBasket.class);
 
     private final SalesSystemDAO dao;
 
@@ -22,22 +19,22 @@ public class StockBasket {
 
     public boolean addProductToStock(Long id, String name, double price, int quantity) throws SalesSystemException {
         try{
-            boolean temp = true;
+            boolean isUpdateStockSuccessful = true;
             dao.beginTransaction();
             validatePrice(price);
             validateQuantity(quantity);
             List<Long> ids = getListOfIds();
             if (ids.contains(id)) {
-                temp = updateProductQuantity(id, quantity, name, price);
+                isUpdateStockSuccessful = updateProductQuantity(id, quantity, name, price);
             } else {
                 StockItem newItem = new StockItem(id, name, "", price, quantity);
                 dao.saveStockItem(newItem);
             }
             dao.commitTransaction();
-            return temp;
-        } catch (Exception e) {
+            return isUpdateStockSuccessful;
+        } catch (Exception exception) {
             dao.rollbackTransaction();
-            throw e;
+            throw exception;
         }
     }
 
@@ -61,16 +58,15 @@ public class StockBasket {
 
     public StockItem getStockItemByBarcode(String barCode) throws SalesSystemException {
         try {
-            long code = Long.parseLong(barCode);
-            return dao.findStockItem(code);
+            long barCodeLong = Long.parseLong(barCode);
+            return dao.findStockItem(barCodeLong);
         } catch (NumberFormatException e) {
             throw new SalesSystemException("Invalid barcode format.", e);
         }
     }
 
     public boolean updateProductQuantity(Long id, int newQuantity, String name, double price) throws SalesSystemException {
-        validateQuantity(newQuantity);  // Ensure new quantity is valid
-
+        validateQuantity(newQuantity);
         List<StockItem> stockItems = dao.findStockItems();
         if (stockItems == null) {
             throw new SalesSystemException("Stock items could not be loaded.");

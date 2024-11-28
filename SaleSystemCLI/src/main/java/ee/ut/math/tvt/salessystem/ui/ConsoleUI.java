@@ -38,6 +38,7 @@ public class ConsoleUI {
     }
 
     public static void main(String[] args) throws Exception {
+        org.apache.logging.log4j.core.config.Configurator.setLevel("org.hibernate", org.apache.logging.log4j.Level.OFF);
         SalesSystemDAO dao = new HibernateSalesSystemDAO();
         ConsoleUI console = new ConsoleUI(dao);
         log.info("Starting Sales System ConsoleUI.");
