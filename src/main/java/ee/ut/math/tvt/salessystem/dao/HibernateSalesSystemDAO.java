@@ -7,6 +7,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,17 +31,10 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO{
     public List<String> findStockItemsNames() {
         return em.createQuery("SELECT s.name FROM StockItem s", String.class).getResultList();
     }
+
     @Override
-    public void updateQuantity(Purchase purchase) {
-        for (SoldItem soldItem : purchase.getSoldItems()) {
-            StockItem stockItem = soldItem.getStockItem();
-            int newQuantity = stockItem.getQuantity() - soldItem.getQuantity();
-            if (newQuantity < 0) {
-                throw new IllegalArgumentException("Not enough stock for item: " + stockItem.getName());
-            }
-            stockItem.setQuantity(newQuantity);
-            em.merge(stockItem);
-        }
+    public void updateQuantity(StockItem stockItem) {
+        em.merge(stockItem);
     }
 
     @Override
@@ -56,6 +51,28 @@ public class HibernateSalesSystemDAO implements SalesSystemDAO{
     public List<Purchase> getPurchaseHistory() {
         return em.createQuery("FROM Purchase", Purchase.class).getResultList();
     }
+
+    @Override
+    public List<Purchase> getLast10HistoryItems() {
+        return em.createQuery("FROM Purchase ORDER BY id DESC", Purchase.class)
+                .setMaxResults(10)
+                .getResultList();
+    }
+
+    @Override
+    public List<Purchase> getPurchasesBetweenDates(LocalDate startDate, LocalDate endDate) {
+        // Convert LocalDate to LocalDateTime for accurate comparison
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);
+
+        return em.createQuery(
+                        "FROM Purchase p WHERE p.dateTime BETWEEN :start AND :end ORDER BY p.dateTime DESC",
+                        Purchase.class)
+                .setParameter("start", startDateTime)
+                .setParameter("end", endDateTime)
+                .getResultList();
+    }
+
 
     @Override
     public StockItem findStockItem(long id) {

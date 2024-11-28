@@ -244,8 +244,8 @@ public class PurchaseController implements Initializable {
             try {
 
                 int quantity = Integer.parseInt(quantityField.getText());
-                if (quantity <= 0)
-                    throw new NumberFormatException(quantityField.getText());
+                /*if (quantity <= 0)
+                    throw new NumberFormatException(quantityField.getText());*/
 
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
                 log.debug("Added item to cart - StockItem: {}, Quantity: {}", stockItem.getName(), quantity);

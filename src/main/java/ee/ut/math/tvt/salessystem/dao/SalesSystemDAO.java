@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
 import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public interface SalesSystemDAO {
 
     void saveSoldItem(SoldItem item);
 
-    void updateQuantity(Purchase purchase);
+    void updateQuantity(StockItem stockItem);
 
     List<Purchase> getPurchaseHistory();
 
@@ -54,5 +55,9 @@ public interface SalesSystemDAO {
     void rollbackTransaction();
 
     void commitTransaction();
+
+    List<Purchase> getLast10HistoryItems();
+
+    List<Purchase> getPurchasesBetweenDates(LocalDate startDate, LocalDate endDate);
 
 }

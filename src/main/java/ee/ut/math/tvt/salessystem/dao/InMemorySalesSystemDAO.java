@@ -7,8 +7,11 @@ import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
@@ -64,15 +67,8 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
     }
 
     @Override
-    public void updateQuantity(Purchase purchase){
-        for (SoldItem soldItem : purchase.getSoldItems()) {
-            StockItem stockItem = soldItem.getStockItem();
-            int newQuantity = stockItem.getQuantity() - soldItem.getQuantity();
-            if (newQuantity < 0) {
-                throw new IllegalArgumentException("Not enough stock for item: " + stockItem.getName());
-            }
-            stockItem.setQuantity(newQuantity);
-        }
+    public void updateQuantity(StockItem stockItem){
+        return;
     }
 
     @Override
@@ -106,6 +102,27 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
             if (name.equals(stockItem.getName())) return stockItem;
         }
         return null;
+    }
+
+    @Override
+    public List<Purchase> getLast10HistoryItems(){
+        List<Purchase> last10Purchases = this.getPurchaseHistory().stream()
+                .sorted(Comparator.comparing(Purchase::getDateTime).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+        return last10Purchases;
+    }
+
+    @Override
+    public List<Purchase> getPurchasesBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return purchaseHistory.stream()
+                .filter(purchase -> {
+                    LocalDate purchaseDate = purchase.getDateTime().toLocalDate();
+                    return (purchaseDate.isEqual(startDate) || purchaseDate.isAfter(startDate)) &&
+                            (purchaseDate.isEqual(endDate) || purchaseDate.isBefore(endDate));
+                })
+                .sorted(Comparator.comparing(Purchase::getDateTime).reversed())
+                .collect(Collectors.toList());
     }
 
 

@@ -4,6 +4,7 @@ import ee.ut.math.tvt.salessystem.SalesSystemException;
 import ee.ut.math.tvt.salessystem.dao.SalesSystemDAO;
 import ee.ut.math.tvt.salessystem.dataobjects.Purchase;
 import ee.ut.math.tvt.salessystem.dataobjects.SoldItem;
+import ee.ut.math.tvt.salessystem.dataobjects.StockItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +31,7 @@ public class ShoppingCart {
         int warehouseQuantity = dao.findStockItem(item.getStockItem().getId()).getQuantity();
         log.debug("Warehouse quantity for {} is {}", item.getName(), warehouseQuantity);
 
-        if (warehouseQuantity - item.getQuantity() < 0) {
+        if (warehouseQuantity - item.getQuantity() < 0 || item.getQuantity() <= 0) {
             log.info("Product quantity exceeds available stock for {}. Requested: {}, Available: {}", item.getName(), item.getQuantity(), warehouseQuantity);
             throw new SalesSystemException("Product amount exceeds what is available in stock");
         }
@@ -93,7 +94,16 @@ public class ShoppingCart {
                     log.debug("Saved item to purchase history: {}, quantity: {}", item.getName(), item.getQuantity());
                 }
 
-                dao.updateQuantity(purchase);
+                //Updates quantities
+                for (SoldItem soldItem : purchase.getSoldItems()) {
+                    StockItem stockItem = soldItem.getStockItem();
+                    int newQuantity = stockItem.getQuantity() - soldItem.getQuantity();
+                    if (newQuantity < 0) {
+                        throw new IllegalArgumentException("Not enough stock for item: " + stockItem.getName());
+                    }
+                    stockItem.setQuantity(newQuantity);
+                    dao.updateQuantity(stockItem);
+                }
                 // Save the Purchase as a complete transaction
                 dao.mergePurchase(purchase);
 

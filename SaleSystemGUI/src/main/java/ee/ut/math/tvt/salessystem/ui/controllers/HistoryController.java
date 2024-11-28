@@ -169,14 +169,8 @@ public class HistoryController implements Initializable {
             return;
         }
 
-        List<Purchase> filteredPurchases = dao.getPurchaseHistory().stream()
-                .filter(purchase -> {
-                    LocalDate purchaseDate = purchase.getDateTime().toLocalDate();
-                    return (purchaseDate.isEqual(startDate) || purchaseDate.isAfter(startDate)) &&
-                            (purchaseDate.isEqual(endDate) || purchaseDate.isBefore(endDate));
-                })
-                .sorted(Comparator.comparing(Purchase::getDateTime).reversed())
-                .collect(Collectors.toList());
+        // Fetch filtered purchases using the new DAO method
+        List<Purchase> filteredPurchases = dao.getPurchasesBetweenDates(startDate, endDate);
 
         ObservableList<Purchase> purchases = FXCollections.observableArrayList(filteredPurchases);
         purchaseTable.setItems(purchases);
