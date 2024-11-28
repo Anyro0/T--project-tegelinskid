@@ -95,13 +95,6 @@ public class SoldItem {
         this.stockItem = stockItem;
     }
 
-    /*@Override
-    public String toString() {
-        return String.format("SoldItem{id=%d, name='%s'}", id, name);
-    }
-
-     */
-
     @Override
     public String toString() {
         return "SoldItem{" +

@@ -115,7 +115,8 @@ public class PurchaseController implements Initializable {
             log.info("No stock item found with name: {}", "Empty String (\"\")");
         } else {
             //Currently finds stockitem using name, meaning that product names have to be unique
-            //This is becuase nameField is a ChoiceBox datatype that does not accept SoldItem as an argument
+            //This is because nameField is a ChoiceBox datatype that does not accept SoldItem as an argument
+            //Only viable solution is to make the String name itself contain the id, but this is debatable whether it is better
             stockItemWithTheSameName = dao.findStockItem(newName);
             barCodeField.setText(Long.toString(stockItemWithTheSameName.getId()));
             priceField.setText(Double.toString(stockItemWithTheSameName.getPrice()));
@@ -244,8 +245,6 @@ public class PurchaseController implements Initializable {
             try {
 
                 int quantity = Integer.parseInt(quantityField.getText());
-                /*if (quantity <= 0)
-                    throw new NumberFormatException(quantityField.getText());*/
 
                 shoppingCart.addItem(new SoldItem(stockItem, quantity));
                 log.debug("Added item to cart - StockItem: {}, Quantity: {}", stockItem.getName(), quantity);

@@ -119,7 +119,6 @@ public class HistoryController implements Initializable {
     private void showPurchaseDetails(Purchase purchase) {
         if (purchase != null) {
             ObservableList<SoldItem> items = FXCollections.observableArrayList(purchase.getSoldItems());
-            //System.out.println(items);
             itemTable.setItems(items);
         } else {
             itemTable.getItems().clear();
