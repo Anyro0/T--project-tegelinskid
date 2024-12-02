@@ -33,9 +33,9 @@ public class StockBasketTest {
     }
     @Test
     public void testAddingNewItem () {
-        int exp = dao.findStockItems().size() + 1;
+        int expSize = dao.findStockItems().size() + 1;
         stockBasket.addProductToStock(stockBasket.getListOfIds().getLast()+1,"asi",4,2);
-        assertEquals(exp,dao.findStockItems().size());
+        assertEquals(expSize,dao.findStockItems().size());
     }
     @Test
     public void testAddingExistingItem () {

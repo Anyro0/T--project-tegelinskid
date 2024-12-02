@@ -60,9 +60,9 @@ public class InMemorySalesSystemDAO implements SalesSystemDAO {
 
     @Override
     public void mergePurchase(Purchase purchase){
-        Purchase uus = purchaseHistory.getLast();
-        List<SoldItem> a = purchase.getSoldItems();
-        uus.setSoldItems(a);
+        Purchase newPurchase = purchaseHistory.getLast();
+        List<SoldItem> newSoldItems = purchase.getSoldItems();
+        newPurchase.setSoldItems(newSoldItems);
 
     }
 

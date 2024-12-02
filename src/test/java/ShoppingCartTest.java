@@ -39,21 +39,22 @@ public class ShoppingCartTest {
     public void testAddingExistingItem () {
         //check that adding an existing item increases
         //the quantity
-        int exp = 2;
+        int expQuantity = 2;
 
         shoppingCart.addItem(soldItem);
         shoppingCart.addItem(soldItem);
 
-        assertEquals(exp,shoppingCart.getAll().getFirst().getQuantity());
+        assertEquals(expQuantity,shoppingCart.getAll().getFirst().getQuantity());
 
     }
     @Test
     public void testAddingNewItem() {
         //- check that the new item is added to the shopping
         //cart
+        int expAmount = 1;
         shoppingCart.addItem(soldItem);
 
-        assertEquals(1,shoppingCart.getAll().size());
+        assertEquals(expAmount,shoppingCart.getAll().size());
 
 
     }
@@ -88,12 +89,12 @@ public class ShoppingCartTest {
     @Test
     public void testSubmittingCurrentPurchaseDecreasesStockItemQuantity () {
         //- check that submitting the current purchase decreases the quantity of all StockItems
-        int exp = stockItem.getQuantity() - soldItem.getQuantity();
+        int expQuantity = stockItem.getQuantity() - soldItem.getQuantity();
 
         shoppingCart.addItem(soldItem);
         shoppingCart.submitCurrentPurchase();
 
-        assertEquals(exp,stockItem.getQuantity());
+        assertEquals(expQuantity,stockItem.getQuantity());
     }
     @Test
     public void testSubmittingCurrentPurchaseBeginsAndCommitsTransaction() {
@@ -104,9 +105,7 @@ public class ShoppingCartTest {
         when(soldItem1.getStockItem()).thenReturn(new StockItem(1L, "Test Item", "Test Description", 10.0, 10));
         when(mockdao.findStockItem(anyLong())).thenReturn(new StockItem(1L, "Test Item", "Test Description", 10.0, 10));
 
-
         mockShoppingCart.addItem(soldItem1);
-
         mockShoppingCart.submitCurrentPurchase();
 
         verify(mockdao,times(1)).beginTransaction();
@@ -124,7 +123,7 @@ public class ShoppingCartTest {
         shoppingCart.addItem(soldItem);
         shoppingCart.submitCurrentPurchase();
 
-        assertEquals(dao.getPurchaseHistory().getFirst().getSoldItems().getFirst(),soldItem);
+        assertEquals(soldItem,dao.getPurchaseHistory().getFirst().getSoldItems().getFirst());
 
     }
     @Test
@@ -137,6 +136,7 @@ public class ShoppingCartTest {
         LocalDateTime dateTimeBefore = LocalDateTime.now();
         shoppingCart.submitCurrentPurchase();
         LocalDateTime dateTimeAfter = LocalDateTime.now();
+
         //Kontrollib et salvestatud aeg ei oleks enne dateTimeBefore-i ega pärast dateTimeAfter-it
         assertTrue(!dao.getPurchaseHistory().getFirst().getDateTime().isBefore(dateTimeBefore)
                 && !dao.getPurchaseHistory().getFirst().getDateTime().isAfter(dateTimeAfter));
@@ -147,6 +147,7 @@ public class ShoppingCartTest {
         //check that canceling an order (with some items)
         //and then submitting a new order (with some different items) only saves the items
         //from the new order (with canceled items are discarded)
+        int expSize = 1;
         SoldItem soldItem2 = new SoldItem(dao.findStockItem(2l),1);
 
         shoppingCart.addItem(soldItem);
@@ -155,21 +156,21 @@ public class ShoppingCartTest {
         shoppingCart.addItem(soldItem2);
         shoppingCart.submitCurrentPurchase();
 
-        assertEquals(dao.getPurchaseHistory().size(),1);
-        assertEquals(dao.getPurchaseHistory().getFirst().getSoldItems().size(),1);
-        assertEquals(dao.getPurchaseHistory().getFirst().getSoldItems().getFirst(),soldItem2);
+        assertEquals(expSize,dao.getPurchaseHistory().size());
+        assertEquals(expSize,dao.getPurchaseHistory().getFirst().getSoldItems().size());
+        assertEquals(soldItem2,dao.getPurchaseHistory().getFirst().getSoldItems().getFirst());
 
     }
     @Test
     public void testCancellingOrderQuanititesUnchanged() {
         //check that after
         //canceling an order the quantities of the related StockItems are not changed
-        int exp = stockItem.getQuantity();
+        int expQuantity = stockItem.getQuantity();
 
         shoppingCart.addItem(soldItem);
         shoppingCart.cancelCurrentPurchase();
 
-        assertEquals(exp,stockItem.getQuantity());
+        assertEquals(expQuantity,stockItem.getQuantity());
     }
 
 }
