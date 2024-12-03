@@ -33,7 +33,7 @@ public class ShoppingCart {
 
         if (warehouseQuantity - item.getQuantity() < 0 || item.getQuantity() <= 0) {
             log.info("Product quantity exceeds available stock for {}. Requested: {}, Available: {}", item.getName(), item.getQuantity(), warehouseQuantity);
-            throw new SalesSystemException("Product amount exceeds what is available in stock");
+            throw new SalesSystemException("Product amount exceeds what is available in stock or inputted stock amount is less than 1");
         }
 
         for (SoldItem itemAlreadyInBasket : items) {
