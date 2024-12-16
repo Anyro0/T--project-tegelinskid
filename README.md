@@ -43,6 +43,7 @@ Test plan + Test Cases: https://tegelinskid.atlassian.net/wiki/spaces/DELPHINUS/
 
 ## Homework 7:
 Task 1: https://tegelinskid.atlassian.net/wiki/spaces/D/pages/24805377/KAN-33+USABILITY+USER+STORY+TEST+CASE
+
 https://tegelinskid.atlassian.net/wiki/spaces/D/pages/24707073/KAN-32+USABILITY+USER+STORY+TEST+CASE
 
 Task 2.1: https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/25067521/Task+2.1
