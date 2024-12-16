@@ -42,8 +42,11 @@ https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-5
 Test plan + Test Cases: https://tegelinskid.atlassian.net/wiki/spaces/DELPHINUS/pages/18644993/Test+Plan+Test+Cases
 
 ## Homework 7:
-Task 1: 
-Task 2.1:
+Task 1: https://tegelinskid.atlassian.net/wiki/spaces/D/pages/24805377/KAN-33+USABILITY+USER+STORY+TEST+CASE
+https://tegelinskid.atlassian.net/wiki/spaces/D/pages/24707073/KAN-32+USABILITY+USER+STORY+TEST+CASE
+
+Task 2.1: https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/25067521/Task+2.1
+
 Task 2.2: https://tegelinskid.atlassian.net/wiki/spaces/~712020fd736e16a13d4a389be25cd1ec37056a/pages/24379393/Task+2.2
 
 We encourage you to use [markdown syntax](https://confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html)
