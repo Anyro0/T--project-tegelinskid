@@ -42,6 +42,9 @@ https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/homework-5
 Test plan + Test Cases: https://tegelinskid.atlassian.net/wiki/spaces/DELPHINUS/pages/18644993/Test+Plan+Test+Cases
 
 ## Homework 7:
+
+https://bitbucket.org/tarkvaraarendus/lg-8-tegelinskid/commits/tag/Homework7
+
 Task 1: https://tegelinskid.atlassian.net/wiki/spaces/D/pages/24805377/KAN-33+USABILITY+USER+STORY+TEST+CASE
 
 https://tegelinskid.atlassian.net/wiki/spaces/D/pages/24707073/KAN-32+USABILITY+USER+STORY+TEST+CASE
