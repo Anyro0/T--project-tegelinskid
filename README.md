@@ -4,4 +4,4 @@
 3. Robyn Tomson
 4. Andreas Kelder
 
-A point of sales system, made in Software Engineering class in Tartu University
+A point of sales system, made from a base template in Software Engineering class in Tartu University
